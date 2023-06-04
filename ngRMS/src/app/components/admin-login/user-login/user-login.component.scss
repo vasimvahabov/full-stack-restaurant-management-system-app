@@ -1,0 +1,44 @@
+.login-container{
+  background-color: rgb(243, 243, 186);
+  position: relative;
+  
+  .close-btn{
+    font-size: 34px;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+
+    &:hover{
+      background-color: rgb(177, 165, 165);
+      border-radius: 50%;
+    }
+  }
+
+  .login-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;  
+    height:400px;
+    width: 380px;
+    border-radius: 5px;
+    margin:auto; 
+
+    h1{
+      color:rgb(78, 54, 54);
+      font-size: 28px;
+    }
+
+    .msg{
+      color:rgb(244, 67, 54);
+      font-size: 16px;
+    }
+    
+    .form-field{
+      width: 70%;
+    }
+  }
+}
+

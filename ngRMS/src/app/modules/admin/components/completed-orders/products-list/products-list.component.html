@@ -1,0 +1,23 @@
+<div class="product-list-container"> 
+  <span (click)="close()" class="material-icons-outlined close-btn">close</span>
+      <div class="table-container">
+        <table class="table table-hover bg-white">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Count</th>
+              <th>Price</th>  
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of productsList">
+              <td>{{product.prodName}}</td>
+              <td>{{product.cateName}}</td>
+              <td>{{product.prodCount}}</td>
+              <td>${{product.total}}</td> 
+            </tr>
+          </tbody>
+        </table>
+      </div>
+</div>

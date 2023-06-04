@@ -1,0 +1,48 @@
+:host{
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.edit-profile-container{
+    background-color:rgb(249 215 221);
+    margin: auto;
+    height:90%;
+    border-radius: 5px;
+    
+    .admin-form{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;  
+      height:100%;
+      width: 380px;
+      border-radius: 5px;
+      margin:auto; 
+  
+      h1{
+        color:rgb(78, 54, 54);
+        font-size: 28px;
+      }
+
+      .tooglereset-password{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+      }
+
+      .buttons-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:25px;
+
+        button:first-child{
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+  
+  

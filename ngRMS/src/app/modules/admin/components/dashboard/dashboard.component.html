@@ -1,0 +1,89 @@
+<div class="dashboard-container"> 
+  <ng-container  *ngIf="adminDasboard!==undefined">
+
+    <div class="card">
+      <h3 class="card-header m-0 text-center">Admins</h3>
+      <div class="card-body">
+        <p class="card-text text-center">
+          {{adminDasboard.adminsCount}}
+        </p>
+        <a routerLink="/admin/dashboard" class="btn btn-primary">
+          <span class="material-icons-outlined">open_in_new</span>
+        </a>
+      </div>
+    </div> 
+
+    <div class="card">
+      <h3 class="card-header m-0 text-center">Users</h3>
+      <div class="card-body">
+        <p class="card-text text-center">
+          {{adminDasboard.usersCount}}
+        </p>
+        <a routerLink="/admin/users" class="btn btn-primary">
+          <span class="material-icons-outlined">open_in_new</span>
+        </a>
+      </div>
+    </div> 
+  
+    <div class="card">
+      <h3 class="card-header m-0 text-center">Products</h3>
+      <div class="card-body">
+        <p class="card-text text-center">
+          {{adminDasboard.productsCount}}
+        </p>
+        <a routerLink="/admin/products" class="btn btn-primary">
+          <span class="material-icons-outlined">open_in_new</span>
+        </a>
+      </div>
+    </div> 
+    
+    <div class="card">
+      <h3 class="card-header m-0 text-center">Categories</h3>
+      <div class="card-body">
+        <p class="card-text text-center">
+          {{adminDasboard.categoriesCount}}
+        </p>
+        <a routerLink="/admin/categories" class="btn btn-primary">
+          <span class="material-icons-outlined">open_in_new</span>
+        </a>
+      </div>
+    </div>  
+  
+    <div class="card">
+      <h3 class="card-header m-0 text-center">Compeleted Orders</h3>
+      <div class="card-body">
+        <p class="card-text text-center">
+          {{adminDasboard.completedOrdersCount}}
+        </p>
+        <a routerLink="/admin/completed-orders" class="btn btn-primary">
+          <span class="material-icons-outlined">open_in_new</span>
+        </a>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3 class="card-header m-0 text-center">Positions</h3>
+      <div class="card-body">
+        <p class="card-text text-center">
+          {{adminDasboard.positionsCount}}
+        </p>
+        <a routerLink="/admin/positions" class="btn btn-primary">
+          <span class="material-icons-outlined">open_in_new</span>
+        </a>
+      </div>
+    </div> 
+    
+    <div class="card">
+      <h3 class="card-header m-0 text-center">Employees</h3>
+      <div class="card-body">
+        <p class="card-text text-center">
+          {{adminDasboard.employeesCount}}
+        </p>
+        <a routerLink="/admin/employees" class="btn btn-primary">
+          <span class="material-icons-outlined">open_in_new</span>
+        </a>
+      </div>
+    </div> 
+
+  </ng-container>
+</div> 

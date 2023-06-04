@@ -1,0 +1,70 @@
+.add-order-dialog{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+ 
+  .btn-close-dialog{ 
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+    display: flex;
+    outline: none;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+
+    span{
+      font-size: 40px;
+      margin: 0;
+    }
+
+    &:hover{
+      border-radius: 50%;
+      background-color: rgb(235, 235, 233);
+    }
+  }
+
+  .mat-dialog-content{
+    width: 100%; 
+    
+    .col-sm-5{
+      margin:auto; 
+
+      .form-select{
+        width:50%;
+        margin:auto;
+        margin-bottom: 15px;
+      }
+    }
+
+    .table-container{
+      height: 250px;
+      overflow-y: auto!important;
+  
+      .table{
+        width:95%;
+        margin: auto;
+  
+        td{ 
+          vertical-align: middle;  
+  
+          .actions{
+            display: flex;
+          
+            .btn:not(:last-child){
+              margin-right:5px;
+            }
+          }
+        }
+      }
+    }
+  
+    #btn-add-product{
+      margin: 10px auto;
+    }
+  }
+
+}
+

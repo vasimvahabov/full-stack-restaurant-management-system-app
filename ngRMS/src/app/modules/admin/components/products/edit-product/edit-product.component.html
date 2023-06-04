@@ -1,0 +1,108 @@
+<div class="edit-product-container">     
+    <form class="product-form" [formGroup]="productGroup" (ngSubmit)="onSubmit()">
+      <h1 class="mb-4" mat-dialog-title>Edit Product</h1>
+
+      <!--------------------------  Name field  -------------------------->
+     <div class="col-md-10">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" formControlName="name" class="form-control"
+      [ngClass]="{'is-invalid':productGroup.controls['name'].errors,'is-valid':productGroup.controls['name'].errors===null}"
+      id="name"> 
+      
+      <div *ngIf="productGroup.controls['name'].errors?.['required']; else secondNameErrTemplate" class="invalid-feedback">
+        <span>Name is required...</span>
+      </div> 
+
+      <ng-template #secondNameErrTemplate>
+        <div *ngIf="productGroup.controls['name'].errors?.['maxlength']; else thirdNameErrTemplate" class="invalid-feedback">
+          <span>Name mustn't owerflow 100 character...</span>
+        </div> 
+      </ng-template>
+
+      <ng-template #thirdNameErrTemplate>
+        <div *ngIf="productGroup.controls['name'].errors?.['onlywhitespace']; else nameSuccessTemplate" class="invalid-feedback">
+          <span>Name can't contain only white space...</span>
+        </div> 
+      </ng-template>
+
+      <ng-template #nameSuccessTemplate>
+        <div class="valid-feedback" *ngIf="productGroup.controls['name'].errors===null">
+          <span>Looks good!</span>
+        </div>
+      </ng-template>
+    </div>
+    <!--------------------------  Name field  -------------------------->
+
+
+    <!--------------------------  Price field  -------------------------->
+    <div class="col-md-10">
+      <label for="price" class="form-label">Price($)</label>
+      <input type="text" formControlName="price" class="form-control"
+      [ngClass]="{'is-invalid':productGroup.controls['price'].errors,'is-valid':productGroup.controls['price'].errors===null}"
+      id="price">
+      
+      <div *ngIf="productGroup.controls['price'].errors?.['required']; else secondPriceErrTemplate" class="invalid-feedback">
+        <span>Price is required...</span>
+      </div> 
+
+      <ng-template #secondPriceErrTemplate>
+        <div *ngIf="productGroup.controls['price'].errors?.['min']; else thirdPriceErrTemplate" class="invalid-feedback">
+          <span>Price must be at least $0.01...</span>
+        </div>  
+      </ng-template>
+      
+      <ng-template #thirdPriceErrTemplate>
+        <div *ngIf="productGroup.controls['price'].errors?.['max']; else fourthPriceErrTemplate" class="invalid-feedback">
+          <span>Price mus't overflow $9999.99...</span>
+        </div>  
+      </ng-template>
+
+      <ng-template #fourthPriceErrTemplate>
+        <div *ngIf="productGroup.controls['price'].errors?.['pattern']; else priceSuccessTemplate" class="invalid-feedback">
+          <span>Price is not valid...</span>
+        </div>  
+      </ng-template>
+
+      <ng-template #priceSuccessTemplate>
+        <div *ngIf="productGroup.controls['price'].errors===null" class="valid-feedback">
+          <span>Looks good!</span>
+        </div>
+      </ng-template>
+    </div>
+    <!--------------------------  Price field  -------------------------->
+
+
+    <!--------------------------  Category field  -------------------------->
+    <div class="col-md-10">
+      <label for="categoryName" class="form-label">Category Name</label>
+      <select id="categoryName" formControlName="category" class="form-control"
+      [ngClass]="{'is-invalid':productGroup.controls['category'].errors,'is-valid':productGroup.controls['category'].errors===null}">
+        <option value="">-- Select category --</option>
+        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+      </select>
+      
+      <div *ngIf="productGroup.controls['category'].errors?.['required']; else categorySuccessTemplate" class="invalid-feedback">
+        <span>Category is required...</span>
+      </div>
+      
+      <ng-template #categorySuccessTemplate>
+        <div *ngIf="productGroup.controls['category'].errors===null" class="valid-feedback">
+          <span>Looks good!</span>
+        </div>
+      </ng-template>
+    </div>      
+    <!--------------------------  Category field  -------------------------->
+
+
+    
+    <!--------------------------  Buttons container -------------------------->
+    <div class="buttons-container">
+      <button mat-raised-button color="warn" (click)="cancel()" type="button">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" 
+      [disabled]="productGroup.invalid===true">Save</button>
+    </div>
+    <!--------------------------  Buttons container -------------------------->
+
+
+    </form> 
+</div>

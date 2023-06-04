@@ -1,0 +1,19 @@
+<div class="products-container"> 
+
+  <button class="btn btn-dark my-2" (click)="addProduct()">
+    <span class="material-icons add-icon">add</span> 
+  </button>
+
+  <div *ngFor="let product of products" class="card"> 
+    <div class="card-body">
+      <span class="card-text">
+        {{product.cateName}}&nbsp;|&nbsp;{{product.name}}&nbsp;|&nbsp;${{product.price.toFixed(2)}}&nbsp;|&nbsp;<a routerLink="/admin/categories">Show products in the category</a></span>
+      <span class="actions">
+        <mat-slide-toggle (change)="onSlideToogle(product.id!)" [disabled]="!product.cateStatus" [checked]="product.status"></mat-slide-toggle> 
+        <button class="edit-btn" (click)="editProduct(product)" [disabled]="!product.cateStatus">
+          <span class="material-icons edit-icon">edit</span>
+        </button>
+      </span>
+    </div>
+  </div> 
+</div> 

@@ -1,0 +1,59 @@
+:host{
+  display:flex ;
+  width: 100%;
+  height: 100%;
+}
+
+.admin-page-container{
+  display: flex;
+  flex-direction: row; 
+  margin: auto;
+  position: relative;
+  
+  .left-bar{
+    height: 560px;
+    width:250px;
+    background-color: rgba(253, 250, 250, 0.44);
+    backdrop-filter: blur(5px);
+    margin-right: 20px;  
+    border-radius: 5px;
+
+    .btn-log-out{
+      display: flex;
+      margin:15px auto 0px auto; 
+    }
+
+    .tabs{
+      margin:8px 13px 13px 13px;
+
+      a{
+        text-decoration: none;
+        color:rgb(82, 49, 49);
+      }
+
+      .tab{
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        padding:10px;
+        background-color: rgb(208, 238, 238);
+        margin:8px;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .right-bar{
+    display: flex;
+    width:700px;
+    height: 560px; 
+    background-color: rgba(253, 250, 250, 0.44);
+    backdrop-filter: blur(5px);
+    border-radius: 5px;
+  }
+  
+}
+
+
+ 
+ 

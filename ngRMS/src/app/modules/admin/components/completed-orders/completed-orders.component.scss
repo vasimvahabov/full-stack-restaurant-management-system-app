@@ -1,0 +1,45 @@
+:host{
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.completed-orders-container{ 
+  display: flex;
+  width: 100%;
+  margin: 30px;
+
+  .table-container-wrapper{
+    display: flex;
+    width: 100%;
+    background-color: white;
+    border-radius: 4px;
+
+    .table-container{  
+      width: 100%;
+      overflow-y: auto;
+
+      .table{  
+        width:97%;
+        margin:3px auto; 
+        
+        tbody tr{
+          &:last-child{ 
+            border-color: transparent;
+          }  
+          
+          td span{
+            color:rgb(76, 113, 216);
+            cursor: pointer;
+            
+            &:first-child{
+              margin-right:10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  
+}

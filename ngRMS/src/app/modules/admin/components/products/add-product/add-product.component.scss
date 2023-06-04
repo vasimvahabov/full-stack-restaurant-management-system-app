@@ -1,0 +1,38 @@
+:host{
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .add-product-container{
+      background-color: rgb(243, 243, 186);
+      
+      .product-form{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;  
+        height:100%;
+        width: 380px;
+        border-radius: 5px;
+        margin:auto; 
+    
+        h1{
+          color:rgb(78, 54, 54);
+          font-size: 28px;
+        }
+  
+        .buttons-container{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top:25px;
+  
+          button:first-child{
+            margin-right: 20px;
+          }
+        }
+      }
+    }
+    
+    

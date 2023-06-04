@@ -1,0 +1,52 @@
+<div class="admin-page-container">
+
+  <div class="left-bar">
+    <button (click)="logOut()" class="btn btn-primary btn-log-out">Log Out</button>
+    <div class="tabs">
+
+      <a routerLink="edit-profile">
+        <div class="tab">
+          <span class="material-icons-outlined">manage_accounts</span>&nbsp;Edit Profile
+        </div>
+      </a>
+
+      <a routerLink="dashboard">
+        <div class="tab">
+          <span class="material-icons-outlined">dashboard</span>&nbsp;Dashboard
+        </div>
+      </a>
+
+      <a routerLink="completed-orders">
+        <div class="tab">
+          <span class="material-icons-outlined">list_alt</span>&nbsp;Completed Orders
+        </div>
+      </a>
+
+      <a routerLink="users">
+        <div class="tab"> Users</div>
+      </a> 
+
+      <a routerLink="positions">
+        <div class="tab">Positions</div>
+      </a> 
+
+      <a routerLink="employees">
+        <div class="tab">Employees</div>
+      </a> 
+
+      <a routerLink="categories">
+        <div class="tab">Categories</div>
+      </a> 
+      
+      <a routerLink="products">
+        <div class="tab">Products</div>
+      </a>
+
+    </div>  
+  </div>
+  
+  <div class="right-bar"> 
+    <router-outlet></router-outlet>
+  </div>
+</div>
+

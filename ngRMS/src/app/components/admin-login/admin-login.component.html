@@ -1,0 +1,28 @@
+<div class="login-container">
+
+  <button class="btn btn-light" id="btn-user-login" (click)="userLogin()">Log In as User</button>
+    
+    <form [formGroup]="loginGroup" class="login-form" (ngSubmit)="onSubmit()">
+      <h1 class="mb-4">Le Restaurant | Too Hôtel</h1>
+    
+      <span *ngIf="msg!==undefined" class="msg mt-2 mb-3">{{msg}}</span>
+
+      <mat-form-field class="form-field mb-1">
+        <mat-label>Username</mat-label>
+        <input type="text" formControlName="username" matInput placeholder="Enter username here..." >
+        <mat-error *ngIf="loginGroup.controls['username'].errors?.['required']">Username is required...</mat-error>
+        <mat-error *ngIf="loginGroup.controls['username'].errors?.['whitespace']">Username can't contain white spaces...</mat-error>
+        <mat-error *ngIf="loginGroup.controls['username'].errors?.['maxlength']">Username mustn't owerflow 100 character...</mat-error>
+      </mat-form-field>
+   
+      <mat-form-field class="form-field mb-3">
+        <mat-label>Password</mat-label>
+        <input type="password" formControlName="password" matInput placeholder="Enter password here..">
+        <mat-error *ngIf="loginGroup.controls['password'].errors?.['required']">Password is required...</mat-error>
+        <mat-error *ngIf="loginGroup.controls['password'].errors?.['minlength']">Password must be 8 character at least...</mat-error>
+        <mat-error *ngIf="loginGroup.controls['password'].errors?.['maxlength']">Password mustn't owerflow 100 character...</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary"[disabled]="showLoginBtn()" type="submit">Log In</button>
+    </form> 
+</div>

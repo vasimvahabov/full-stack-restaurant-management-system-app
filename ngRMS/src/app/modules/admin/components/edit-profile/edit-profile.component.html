@@ -1,0 +1,104 @@
+<div class="edit-profile-container" *ngIf="this.adminGroup!==undefined">     
+    <form class="admin-form"[formGroup]="adminGroup" (ngSubmit)="onSubmit()">
+      <h1 class="mb-4" mat-dialog-title>Edit Profile</h1>
+
+      <div class="col-md-10">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" formControlName="username" class="form-control"
+        [ngClass]="{'is-invalid':adminGroup.controls['username'].errors,'is-valid':adminGroup.controls['username'].errors===null}"
+        id="username">
+        
+        <div class="invalid-feedback" *ngIf="adminGroup.controls['username'].errors?.['required']; else secondUsernameErrorTemplate">
+          <span>Username is required...</span>
+        </div> 
+        
+        <ng-template #secondUsernameErrorTemplate>
+          <div class="invalid-feedback" *ngIf="adminGroup.controls['username'].errors?.['white-space']; else thirdUsernameErrorTemplate">
+            <span>Username can't contain white spaces...</span>
+          </div> 
+        </ng-template>
+        
+        <ng-template #thirdUsernameErrorTemplate> 
+          <div *ngIf="adminGroup.controls['username'].errors?.['maxlength']; else correctUsernameTemplate" class="invalid-feedback">
+            <span>Username mustn't owerflow 100 character...</span>
+          </div> 
+        </ng-template>
+        
+        <ng-template #correctUsernameTemplate>
+          <div *ngIf="adminGroup.controls['username'].errors===null" class="valid-feedback">
+            Looks good!
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="toogle-reset-password col-md-10 my-2">
+        <mat-slide-toggle [checked]="showResetInputs" (click)="showResetInputsClicked()">Reset Password</mat-slide-toggle>
+      </div> 
+      <ng-container *ngIf="showResetInputs===true">
+        <div class="col-md-10">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" 
+          formControlName="password" class="form-control"
+          [ngClass]="{'is-invalid':(adminGroup.controls['password'].errors),'is-valid':adminGroup.controls['password'].errors===null}"
+          id="password">
+          
+          <div *ngIf="adminGroup.controls['password'].errors?.['required']; else secondPasswordErrorTemplate" class="invalid-feedback">
+            <span>Password is required...</span>
+          </div> 
+          
+          <ng-template #secondPasswordErrorTemplate>
+            <div *ngIf="adminGroup.controls['password'].errors?.['maxlength']; else thirdPasswordErrorTemplate" class="invalid-feedback">
+              <span>Password mustn't owerflow 100 character...</span>
+            </div>
+          </ng-template>
+          
+          <ng-template #thirdPasswordErrorTemplate>
+            <div *ngIf="adminGroup.controls['password'].errors?.['minlength']; else correctPasswordTemplate" class="invalid-feedback">
+              <span>Password must be 8 character at least...</span>
+            </div>  
+          </ng-template>
+            
+          <ng-template #correctPasswordTemplate>
+            <div *ngIf="adminGroup.controls['password'].errors===null" class="valid-feedback">
+              Looks good!
+            </div>
+          </ng-template>
+            
+        </div>
+
+        <div class="col-md-10">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" [ngClass]="{'is-invalid':adminGroup.controls['confirmPassword'].errors || adminGroup.value.password?.toString()!==adminGroup.value.confirmPassword?.toString(),
+            'is-valid':adminGroup.controls['confirmPassword'].errors===null && adminGroup.value.password?.toString()===adminGroup.value.confirmPassword?.toString()
+          }"
+          formControlName="confirmPassword" class="form-control" id="confirmPassword">
+
+          <div *ngIf="adminGroup.controls['confirmPassword'].errors?.['required']; else secondConfirmPassErrorTemplate" class="invalid-feedback">
+            <span>Confirm password is required...</span>
+          </div>
+
+          <ng-template #secondConfirmPassErrorTemplate>
+            <div *ngIf="adminGroup.controls['confirmPassword'].errors?.['minlength']; else thirdConfirmPassErrorTemplate" class="invalid-feedback">
+              <span>Confirm password must be at least 8 character...</span>
+            </div>
+          </ng-template>
+  
+          <ng-template #thirdConfirmPassErrorTemplate>
+            <div *ngIf="adminGroup.value.password?.toString()!==adminGroup.value.confirmPassword?.toString(); else correctConfirmPassTemplate" class="invalid-feedback">
+              <span>Passwords don't match...</span>
+            </div> 
+          </ng-template>
+           
+          <ng-template #correctConfirmPassTemplate>
+            <div class="valid-feedback" *ngIf="adminGroup.controls['confirmPassword'].errors===null && adminGroup.value.password?.toString()===adminGroup.value.confirmPassword?.toString()">
+              <span>Looks good!</span>
+            </div>
+          </ng-template>
+        </div> 
+      </ng-container>
+      <div class="buttons-container"> 
+        <button mat-raised-button color="primary" type="submit" [disabled]="showSaveBtn()">Save</button>
+      </div>
+
+    </form> 
+</div>

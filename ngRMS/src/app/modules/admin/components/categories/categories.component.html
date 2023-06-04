@@ -1,0 +1,18 @@
+<div class="categories-container"> 
+  
+  <button class="btn btn-dark my-2" (click)="addCategory()">
+    <span class="material-icons add-icon">add</span> 
+  </button>
+  
+  <div *ngFor="let category of categories" class="card"> 
+    <div class="card-body">
+      <span class="card-text">
+        {{category.name}}&nbsp;|&nbsp;{{category.prodCount}} {{category.prodCount!<=1?"product":"products"}}&nbsp;|&nbsp;<a href="#">Show meals in the category</a>
+      </span>
+      <span class="actions">
+        <mat-slide-toggle (change)="onSlideToogle(category.id!)" [checked]="category.status"></mat-slide-toggle> 
+        <span class="material-icons edit-btn" (click)="editCategory(category)">edit</span>
+      </span>
+    </div>
+  </div>
+</div> 
