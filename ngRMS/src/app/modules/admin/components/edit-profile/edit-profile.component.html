@@ -4,9 +4,9 @@
 
       <div class="col-md-10">
         <label for="username" class="form-label">Username</label>
-        <input type="text" formControlName="username" class="form-control"
-        [ngClass]="{'is-invalid':adminGroup.controls['username'].errors,'is-valid':adminGroup.controls['username'].errors===null}"
-        id="username">
+        <input type="text" id="username" formControlName="username" class="form-control"
+        [ngClass]="{'is-invalid':adminGroup.controls['username'].errors,
+                    'is-valid':adminGroup.controls['username'].errors===null}">
         
         <div class="invalid-feedback" *ngIf="adminGroup.controls['username'].errors?.['required']; else secondUsernameErrorTemplate">
           <span>Username is required...</span>
@@ -37,23 +37,25 @@
       <ng-container *ngIf="showResetInputs===true">
         <div class="col-md-10">
           <label for="password" class="form-label">Password</label>
-          <input type="password" 
-          formControlName="password" class="form-control"
-          [ngClass]="{'is-invalid':(adminGroup.controls['password'].errors),'is-valid':adminGroup.controls['password'].errors===null}"
-          id="password">
+          <input type="password" id="password" formControlName="password" class="form-control"
+          [ngClass]="{'is-invalid':(adminGroup.controls['password'].errors),
+                      'is-valid':adminGroup.controls['password'].errors===null}">
           
-          <div *ngIf="adminGroup.controls['password'].errors?.['required']; else secondPasswordErrorTemplate" class="invalid-feedback">
+          <div *ngIf="adminGroup.controls['password'].errors?.['required']; 
+                else secondPasswordErrorTemplate" class="invalid-feedback">
             <span>Password is required...</span>
           </div> 
           
           <ng-template #secondPasswordErrorTemplate>
-            <div *ngIf="adminGroup.controls['password'].errors?.['maxlength']; else thirdPasswordErrorTemplate" class="invalid-feedback">
+            <div *ngIf="adminGroup.controls['password'].errors?.['maxlength']; 
+                  else thirdPasswordErrorTemplate" class="invalid-feedback">
               <span>Password mustn't owerflow 100 character...</span>
             </div>
           </ng-template>
           
           <ng-template #thirdPasswordErrorTemplate>
-            <div *ngIf="adminGroup.controls['password'].errors?.['minlength']; else correctPasswordTemplate" class="invalid-feedback">
+            <div *ngIf="adminGroup.controls['password'].errors?.['minlength']; 
+                  else correctPasswordTemplate" class="invalid-feedback">
               <span>Password must be 8 character at least...</span>
             </div>  
           </ng-template>
@@ -68,29 +70,34 @@
 
         <div class="col-md-10">
           <label for="confirmPassword" class="form-label">Confirm Password</label>
-          <input type="password" [ngClass]="{'is-invalid':adminGroup.controls['confirmPassword'].errors || adminGroup.value.password?.toString()!==adminGroup.value.confirmPassword?.toString(),
-            'is-valid':adminGroup.controls['confirmPassword'].errors===null && adminGroup.value.password?.toString()===adminGroup.value.confirmPassword?.toString()
-          }"
-          formControlName="confirmPassword" class="form-control" id="confirmPassword">
+          <input type="password" formControlName="confirmPassword" class="form-control" id="confirmPassword" 
+          [ngClass]="{'is-invalid':adminGroup.controls['confirmPassword'].errors || 
+                        adminGroup.value.password?.toString()!==adminGroup.value.confirmPassword?.toString(),
+                      'is-valid':adminGroup.controls['confirmPassword'].errors===null && 
+                        adminGroup.value.password?.toString()===adminGroup.value.confirmPassword?.toString()}">
 
-          <div *ngIf="adminGroup.controls['confirmPassword'].errors?.['required']; else secondConfirmPassErrorTemplate" class="invalid-feedback">
+          <div *ngIf="adminGroup.controls['confirmPassword'].errors?.['required'];
+                else secondConfirmPassErrorTemplate" class="invalid-feedback">
             <span>Confirm password is required...</span>
           </div>
 
           <ng-template #secondConfirmPassErrorTemplate>
-            <div *ngIf="adminGroup.controls['confirmPassword'].errors?.['minlength']; else thirdConfirmPassErrorTemplate" class="invalid-feedback">
+            <div *ngIf="adminGroup.controls['confirmPassword'].errors?.['minlength']; 
+                  else thirdConfirmPassErrorTemplate" class="invalid-feedback">
               <span>Confirm password must be at least 8 character...</span>
             </div>
           </ng-template>
   
           <ng-template #thirdConfirmPassErrorTemplate>
-            <div *ngIf="adminGroup.value.password?.toString()!==adminGroup.value.confirmPassword?.toString(); else correctConfirmPassTemplate" class="invalid-feedback">
+            <div *ngIf="adminGroup.value.password?.toString()!==adminGroup.value.confirmPassword?.toString(); 
+                  else correctConfirmPassTemplate" class="invalid-feedback">
               <span>Passwords don't match...</span>
             </div> 
           </ng-template>
            
           <ng-template #correctConfirmPassTemplate>
-            <div class="valid-feedback" *ngIf="adminGroup.controls['confirmPassword'].errors===null && adminGroup.value.password?.toString()===adminGroup.value.confirmPassword?.toString()">
+            <div *ngIf="adminGroup.value.password?.toString()===adminGroup.value.confirmPassword?.toString() &&   
+                        adminGroup.controls['confirmPassword'].errors===null"  class="valid-feedback" >
               <span>Looks good!</span>
             </div>
           </ng-template>

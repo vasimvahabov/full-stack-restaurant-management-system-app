@@ -1,8 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Admin } from '../models/admin';  
-import { AuthService } from './auth.service';
+import { Admin } from '../models/admin';   
 import { ErrorResponseService } from './errorResponseChecker';
 
 @Injectable({
@@ -11,19 +10,22 @@ import { ErrorResponseService } from './errorResponseChecker';
 export class AdminService {
   public url!:string; 
 
-  constructor(private http:HttpClient,private authService:AuthService,
-                               private errorResponseChecker:ErrorResponseService){
+  constructor(
+    private http:HttpClient,
+    private errorResponseChecker:ErrorResponseService){
     this.url="http://localhost:8080/admin/";
   }
 
   logIn=(admin:Admin):Observable<any>=>{  
-    return this.http.post<any>(`${this.url}logIn`,admin,{withCredentials:true}).pipe(map((response:any)=>{
+    const url=`${this.url}logIn`;
+    return this.http.post<any>(url,admin,{withCredentials:true}).pipe(map((response:any)=>{
       return this.errorResponseChecker.check(response);
     }));
   }
 
   logOut=():Observable<any>=>{   
-    return this.http.delete<any>(`${this.url}logOut`,{withCredentials:true}).pipe(map((response:any)=>{
+    const url=`${this.url}logOut`
+    return this.http.delete<any>(url,{withCredentials:true}).pipe(map((response:any)=>{
       return this.errorResponseChecker.check(response);
     }));
   }
@@ -35,20 +37,23 @@ export class AdminService {
     }));
   } 
 
-  getAdminDasboard=():Observable<any>=>{ 
-    return this.http.get<any>(`${this.url}dashboard`,{withCredentials:true}).pipe(map((response:any)=>{
+  getAdminDasboard=():Observable<any>=>{
+    const url=`${this.url}dashboard`;
+    return this.http.get<any>(url,{withCredentials:true}).pipe(map((response:any)=>{
       return this.errorResponseChecker.check(response);
     }));
   }
 
-  getAdmin=():Observable<any>=>{  
-    return this.http.get<any>(`${this.url}get`,{withCredentials:true}).pipe(map((response:any)=>{
+  getAdmin=():Observable<any>=>{ 
+    const url=`${this.url}get`; 
+    return this.http.get<any>(url,{withCredentials:true}).pipe(map((response:any)=>{
       return this.errorResponseChecker.check(response);  
     }));
   } 
 
   updateAdmin=(admin:Admin):Observable<any>=>{
-    return this.http.put<any>(`${this.url}update`,admin,{withCredentials:true}).pipe(map((response:any)=>{
+    const url=`${this.url}update`;
+    return this.http.put<any>(url,admin,{withCredentials:true}).pipe(map((response:any)=>{
       return this.errorResponseChecker.check(response);
     }));
   }

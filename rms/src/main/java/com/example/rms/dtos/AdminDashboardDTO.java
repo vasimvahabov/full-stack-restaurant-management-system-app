@@ -1,24 +1,24 @@
 package com.example.rms.dtos;
-
-import io.micrometer.common.lang.NonNull; 
+ 
+import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdminDashboardDTO {
-  @NonNull
-  public long categoriesCount;
-  @NonNull
-  public long productsCount;
-  @NonNull
-  public long completedOrdersCount;
-  @NonNull
-  public long positionsCount;
-  @NonNull
-  public long employeesCount;
-  @NonNull
-  public long adminsCount;
-  @NonNull
-  public long usersCount; 
+  @Nonnull
+  public Long categoriesCount;
+  @Nonnull
+  public Long productsCount;
+  @Nonnull
+  public Long completedOrdersCount;
+  @Nonnull
+  public Long positionsCount;
+  @Nonnull
+  public Long employeesCount;
+  @Nonnull
+  public Long adminsCount;
+  @Nonnull
+  public Long usersCount; 
 }

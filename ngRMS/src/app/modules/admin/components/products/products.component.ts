@@ -4,7 +4,6 @@ import { Product } from '../../../../models/product';
 import { ProductService } from '../../../../services/product.service';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { AddProductComponent } from './add-product/add-product.component';
-import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-meals',
@@ -15,15 +14,17 @@ export class ProductsComponent {
 
   public products!:Product[];
 
-  constructor(
-    private productService:ProductService,private dialog:MatDialog,private adminService:AdminService){
-    // this.productService.getAllProducts(this.adminService.token).subscribe(response=>{
-      // this.products=response;
-    // });
+  constructor(private productService:ProductService,private dialog:MatDialog){}
+
+  ngOnInit(){
+    this.productService.getAllProducts().subscribe(response=>{
+      if(response!==-1)
+        this.products=response;
+    });
   }
 
   onSlideToogle(prodId:number){ 
-    // this.productService.changeProductStatus(this.adminService.token,prodId).subscribe();
+    this.productService.changeProductStatus(prodId).subscribe();
   }
 
   editProduct(product:Product){
@@ -39,7 +40,7 @@ export class ProductsComponent {
       height:'450px',
       disableClose:true
     });
-    addProductDialog.afterClosed().subscribe((response:any)=>{ 
+    addProductDialog.afterClosed().subscribe(response=>{ 
       if(response.data!==null){ 
         const product:Product=response.data;
         this.products.push(product);

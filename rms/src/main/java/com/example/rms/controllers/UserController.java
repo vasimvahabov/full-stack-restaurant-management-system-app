@@ -10,9 +10,17 @@ import com.example.rms.dtos.UserDTO;
 import com.example.rms.models.UserModel;
 import com.example.rms.services.UserService;
 import jakarta.servlet.http.Cookie; 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse; 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List; 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +28,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("user")
 public class UserController {
 
 private final UserService _userService;
@@ -32,30 +40,41 @@ public UserController(AuthenticationProvider authenticationProvider,UserService 
 }
   
   @PostMapping("logIn")
-  public ResponseEntity<Void> logIn(@AuthenticationPrincipal Integer userId,
-                                                       HttpServletResponse response){
+  public ResponseEntity<Void> logIn(@AuthenticationPrincipal int userId,
+                                     HttpServletResponse response){
     String token=_authenticationProvider.generateToken(userId,"user");
     Cookie cookie=new Cookie("token",token);
-    cookie.setMaxAge(960000);
+    cookie.setMaxAge(960);
     cookie.setPath("/");
-//    cookie.isHttpOnly(); 
+    cookie.setDomain("localhost");
+    cookie.setHttpOnly(true);
     response.addCookie(cookie);     
     return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
   }
   
-//  @DeleteMapping("logOut")
-//  public ResponseEntity<Void> logOut(HttpServletResponse response,HttpServletRequest request){
-//    System.out.println("in user controller");
-//    Cookie[] cookies=request.getCookies();
-//    for(var item:cookies)
-//      if(item.getName().equals("token")){
-//        item.setMaxAge(960);
-//        item.setPath("/");
-////        item.isHttpOnly();
-//        response.addCookie(item);
-//      } 
-//    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT); 
-//  } 
+  @DeleteMapping("logOut")
+  public ResponseEntity<Void> logOut(HttpServletResponse response,HttpServletRequest request){
+    Cookie cookie=new Cookie("token",null);
+    cookie.setMaxAge(0);
+    cookie.setPath("/");
+    cookie.setDomain("localhost");
+    cookie.setHttpOnly(true);
+    response.addCookie(cookie); 
+    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT); 
+  } 
+  
+  @GetMapping("refresh-token")
+  public ResponseEntity<Void> refreshToken(@AuthenticationPrincipal int userId,
+                                             HttpServletResponse response){ 
+    String token=this._authenticationProvider.generateToken(userId,"user");
+    Cookie cookie=new Cookie("token",token);
+    cookie.setMaxAge(960);
+    cookie.setPath("/");
+    cookie.setDomain("localhost");
+    cookie.setHttpOnly(true);
+    response.addCookie(cookie);    
+    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+ }
 
   @GetMapping("list/all")
   public ResponseEntity<List<UserModel>> getAllUsers(){
@@ -63,27 +82,38 @@ public UserController(AuthenticationProvider authenticationProvider,UserService 
     List<UserModel> userModels=new ArrayList<>();
     for(var item:userDTOs){
       UserModel userModel=UserModel.builder()
-                                        .id(item.id)
-                                        .username(item.username)
-                                        .firstName(item.firstName)
-                                        .lastName(item.lastName)
-                                        .status(item.status)
+                                      .id(item.id)
+                                      .username(item.username)
+                                      .password(null)
+                                      .firstName(item.firstName)
+                                      .lastName(item.lastName)
+                                      .status(item.status)
                                     .build();
       userModels.add(userModel);
     }
     return ResponseEntity.ok(userModels);
   } 
   
-  @PutMapping("/change-status/{userId}")
-  public ResponseEntity<Void> changeUserStatus(@PathVariable Integer userId){
+  @PutMapping("change-status/{userId}")
+  public ResponseEntity<Void> changeUserStatus(@PathVariable int userId){
     this._userService.changeUserStatus(userId);
     return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
   }
   
   @PostMapping("add")
-  public ResponseEntity<UserModel> addUser(@RequestBody UserModel userModel){ 
-    UserDTO userDTO=new UserDTO(userModel.id,userModel.username,userModel.password,
-                        userModel.firstName,userModel.lastName,userModel.status);
+  public ResponseEntity<UserModel> addUser(@RequestBody UserModel userModel) 
+                                             throws InvalidKeyException, 
+                                             NoSuchAlgorithmException, 
+                                             NoSuchPaddingException, 
+                                             IllegalBlockSizeException,
+                                             BadPaddingException,
+                                             InvalidAlgorithmParameterException{ 
+    UserDTO userDTO=new UserDTO(null,
+                                   userModel.username,
+                                   userModel.password,
+                                   userModel.firstName,
+                                   userModel.lastName,
+                                   null);
     userDTO=this._userService.addUser(userDTO);
     userModel.id=userDTO.id;
     userModel.password=userDTO.password;
@@ -91,10 +121,20 @@ public UserController(AuthenticationProvider authenticationProvider,UserService 
     return ResponseEntity.ok(userModel);
  }
   
-  @PutMapping("/update")
-  public ResponseEntity<Void> updateUser(@RequestBody UserModel userModel){
-    UserDTO userDTO=new UserDTO(userModel.id,userModel.username,userModel.password,
-                        userModel.firstName,userModel.lastName,userModel.status);
+  @PutMapping("update")
+  public ResponseEntity<Void> updateUser(@RequestBody UserModel userModel)
+                                           throws InvalidKeyException, 
+                                           NoSuchAlgorithmException, 
+                                           NoSuchPaddingException, 
+                                           IllegalBlockSizeException,
+                                           BadPaddingException,
+                                           InvalidAlgorithmParameterException{
+    UserDTO userDTO=new UserDTO(userModel.id,
+                                   userModel.username,
+                                   userModel.password,
+                                   userModel.firstName,
+                                   userModel.lastName,
+                                   null);
     this._userService.updateUser(userDTO);
     return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
   }

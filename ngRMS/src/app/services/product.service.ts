@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';  
 import { Product } from '../models/product';
+import { ErrorResponseService } from './errorResponseChecker';
 
 @Injectable({
   providedIn: 'root'
@@ -9,84 +10,45 @@ import { Product } from '../models/product';
 export class ProductService {
 
   private url!:string;
-  constructor(private http:HttpClient){
-    this.url="https://localhost:7088/product/";
+  
+  constructor(
+    private http:HttpClient,
+    private errorResponseService:ErrorResponseService){
+    this.url="http://localhost:8080/product/";
   }
 
-  getAllProducts=(token:string):Observable<Product[]>=>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.get(`${this.url}list/all`,{headers:header}).pipe(map((data:any)=>{
-      return data.map((item:any)=>{
-        const product:Product={
-          id:item.id,
-          name:item.name,
-          price:item.price,
-          status:item.status,
-          cateId:item.cateId,
-          cateName:item.cateName,
-          cateStatus:item.cateStatus
-        };  
-        return product;        
-      });
+  getAllProducts=():Observable<any>=>{
+    const url=`${this.url}list/all`;
+    return this.http.get(url,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
     }));
   }
 
-  getActiveProducts=(token:string):Observable<Product[]>=>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.get(`${this.url}list/active`,{headers:header}).pipe(map((data:any)=>{
-      return data.map((item:any)=>{
-        const product:Product={
-          id:item.id,
-          name:item.name,
-          price:item.price,
-          status:item.status,
-          cateId:item.cateId,
-          cateName:item.cateName,
-          cateStatus:item.cateStatus
-        };  
-        return product;  
-      });
+  getActiveProducts=():Observable<any>=>{
+    const url=`${this.url}list/active`;
+    return this.http.get(url,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
     }));
   } 
 
-  changeProductStatus(token:string,prodId:number):Observable<void>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.put<void>(`${this.url}change-status`,prodId,{headers:header});
+  changeProductStatus(prodId:number):Observable<any>{ 
+    const url=`${this.url}change-status/${prodId}`;
+    return this.http.put<any>(url,null,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
+    }));
   }
 
-  updateProduct(token:string,product:Product):Observable<void>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.put<void>(`${this.url}update`,product,{headers:header});
+  updateProduct(product:Product):Observable<any>{
+    const url=`${this.url}update`; 
+    return this.http.put<any>(url,product,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
+    }));
   }
 
-  addProduct=(token:string,product:Product):Observable<Product>=>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    }); 
-    return this.http.post<Product>(`${this.url}add`,product,{headers:header}).pipe(map((data:any)=>{
-      const product:Product={
-        id:data.id,
-        name:data.name,
-        price:data.price,
-        status:data.status,
-        cateId:data.cateId,
-        cateName:data.cateName,
-        cateStatus:data.cateStatus
-      };  
-      return product;
+  addProduct=(product:Product):Observable<any>=>{ 
+    const url=`${this.url}add`;
+    return this.http.post<any>(url,product,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
     }));
   }
 }

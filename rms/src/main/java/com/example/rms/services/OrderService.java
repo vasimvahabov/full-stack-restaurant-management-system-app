@@ -1,15 +1,13 @@
 package com.example.rms.services;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.rms.dtos.OrderDTO;
-import com.example.rms.entities.Order;
-import com.example.rms.helpers.AES;
+import com.example.rms.entities.Order; 
+import com.example.rms.entities.User;
 import com.example.rms.repositories.OrderRepository;
+import java.math.BigDecimal; 
 
 @Service
 public class OrderService {
@@ -17,80 +15,36 @@ public class OrderService {
   @Autowired
   OrderRepository orderRepository;
 
-  public List<OrderDTO> getInCompleteOrderDTOsByUserId(String userId){
-	String keyUserId="key?!.user?><%id";
-	Integer userIdAsInt=Integer.parseInt(AES.decrypt(userId,keyUserId));
-	List<OrderDTO> orderDTOs=this.orderRepository.getInCompleteOrderDTOsByUserId(userIdAsInt);
-	String keyOrderId="key?for<order!Id";
-	for(var item:orderDTOs){
-	  String encryptedOrderId=AES.encrypt(item.getId(),keyOrderId);
-	  item.setId(encryptedOrderId);
-	}
-	return orderDTOs;
+  public List<OrderDTO> getInCompleteOrdersByUserId(int userId){ 
+    List<OrderDTO> orderDTOs=this.orderRepository.getInCompleteOrdersByUserId(userId);
+    return orderDTOs;
   }
 
-  public List<OrderDTO> getAllCompletedOrderDTOs(){
-	List<OrderDTO> orderDTOs=this.orderRepository.getAllCompletedOrderDTOs();
+  public List<OrderDTO> getCompletedOrders(){
+    List<OrderDTO> orderDTOs=this.orderRepository.getCompletedOrders(); 
+    return orderDTOs;
+  } 
 
-	String keyUserId="key?!.user?><%id";
-	String keyOrderId="key?for<order!Id";
-
-	for(var item:orderDTOs){
-	  String encreptedUserId=AES.encrypt(item.getUserId(),keyUserId);
-	  item.setUserId(encreptedUserId);
-	  String encryptedOrderId=AES.encrypt(item.getId(),keyOrderId);
-	  item.setId(encryptedOrderId);
-	}
-
-	return orderDTOs;
+  public OrderDTO addOrder(OrderDTO orderDTO){
+    User user=new User(orderDTO.userId,null,null,null,null,null);
+    Order order=new Order(null,orderDTO.title,null,null,null,user,null); 
+    order=this.orderRepository.save(order);
+    orderDTO.id=order.getId();
+    orderDTO.total=new BigDecimal(0);
+    return orderDTO;
   }
 
-  public Long getAllCompletedOrdersCount() {
-    return this.orderRepository.getAllCompletedOrdersCount();
-  }
-
-  public OrderDTO addOrder(LinkedHashMap<String,String> orderDetails){
-	String title=orderDetails.get("title");
-	String userId=orderDetails.get("userId");
-
-    String keyUserId="key?!.user?><%id";
-	int userIdAsInt=Integer.parseInt(AES.decrypt(userId,keyUserId));
-
-	Order order=new Order(null,title,userIdAsInt,null,null,null);
-	order=this.orderRepository.save(order);
-
-	String keyOrderId="key?for<order!Id";
-	String encryptedOrderId=AES.encrypt(order.getId().toString(),keyOrderId);
-
-	OrderDTO addedOrderDTO=this.orderRepository.getInCompleteOrderDTOByOrderId(order.getId());
-	addedOrderDTO.setUserId(userId);
-	addedOrderDTO.setId(encryptedOrderId);
-
-	return addedOrderDTO;
-  }
-
-  public void updateOrder(LinkedHashMap<String,String> orderDetails){
-	String orderId=orderDetails.get("id");
-	String title=orderDetails.get("title");
-
-	String keyOrderId="key?for<order!Id";
-	int orderIdAsInt=Integer.parseInt(AES.decrypt(orderId,keyOrderId));
-
-	Order order=this.orderRepository.findById(orderIdAsInt).orElse(null);
-	order.setTitle(title);
-
+  public void updateOrder(OrderDTO orderDTO){ 
+    Order order=this.orderRepository.findById(orderDTO.id).orElse(null);
+    order.setTitle(orderDTO.title);
     this.orderRepository.save(order);
   }
 
-  public void deleteOrder(String orderId) {
-    String keyOrderId="key?for<order!Id";
-    int orderIdAsInt=Integer.parseInt(AES.decrypt(orderId,keyOrderId));
-    this.orderRepository.deleteById(orderIdAsInt);
+  public void deleteOrder(int orderId) { 
+    this.orderRepository.deleteById(orderId);
   }
 
-  public void completeOrder(String orderId) {
-    String keyOrderId="key?for<order!Id";
-	int orderIdAsInt=Integer.parseInt(AES.decrypt(orderId,keyOrderId));
-	this.orderRepository.completeOrder(orderIdAsInt);
+  public void completeOrder(int orderId) {
+    this.orderRepository.completeOrder(orderId);
   }
 }

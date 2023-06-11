@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs'; 
 import { Order } from '../models/order';
+import { ErrorResponseService } from './errorResponseChecker';
 
 @Injectable({
   providedIn: 'root'
@@ -10,93 +11,51 @@ export class OrderService {
 
   private url!:string; 
 
-  constructor(private http:HttpClient){
-    this.url="https://localhost:7088/order/"
+  constructor(
+    private http:HttpClient,
+    private errorResponseService:ErrorResponseService){
+    this.url="http://localhost:8080/order/"
   }
 
-  getInCompleteOrders=(token:string):Observable<Order[]>=>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    }); 
-    return this.http.get<Order[]>(`${this.url}list/incomplete`,{headers:header}).pipe(map((data:any)=>{
-      return data.map((item:any)=>{
-        console.log(data);
-        const order:Order={
-          id:item.id,
-          title:item.title,
-          userId:item.userId,
-          userFullname:null,
-          createdAt:null,
-          updatedAt:null,
-          total:item.total
-        };
-        return order; 
-      });
+  getInCompleteOrdersByUserId=():Observable<any>=>{  
+    const url=`${this.url}list/incomplete`;
+    return this.http.get<any>(url,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
     }));    
   }
 
-  getCompletedOrders=(token:string):Observable<Order[]>=>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.get<Order[]>("/list/dto/completed/all",{headers:header}).pipe(map((data:any)=>{
-      return data.map((item:any)=>{
-        const order:Order={
-          id:data.id,
-          title:data.title,
-          userId:data.userId,
-          userFullname:data.userFullname,
-          createdAt:data.createdAt,
-          updatedAt:data.updatedAt,
-          total:data.total
-        };
-        return order;
-      });
-    }))
+  getCompletedOrders=():Observable<any>=>{ 
+    const url=`${this.url}list/completed`;
+    return this.http.get<any>(url,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
+    }));     
   }
 
-  addOrder=(token:string,order:Order):Observable<Order>=>{ 
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.post<Order>(`${this.url}add`,order,{headers:header}).pipe(map((data:any)=>{
-      const order:Order={
-        id:data.id,
-        title:data.title,
-        userId:data.userId,
-        userFullname:data.userFullname,
-        createdAt:data.createdAt,
-        updatedAt:data.updatedAt,
-        total:data.total
-      };
-      return order;
-    }));
+  addOrder=(order:Order):Observable<any>=>{ 
+    const url=`${this.url}add`; 
+    return this.http.post<any>(url,order,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
+    }));     
   }
 
-  deleteOrder=(token:string,orderId:number):Observable<void>=>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.delete<void>(`${this.url}delete`,{ body:orderId ,headers:header});
+  deleteOrder=(orderId:number):Observable<any>=>{
+    const url=`${this.url}delete?orderId=${orderId}`;
+    return this.http.delete<any>(url,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
+    }));     
   }
 
-  completeOrder=(token:string,orderId:number):Observable<void>=>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.put<void>(`${this.url}complete`,orderId,{headers:header});
+  completeOrder=(orderId:number):Observable<any>=>{ 
+    const url=`${this.url}complete?orderId=${orderId}`;
+    return this.http.put<any>(url,null,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
+    }));     
   }
 
-  updateOrder=(token:string,order:Order):Observable<void>=>{
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
-    }); 
-    return this.http.put<void>(`${this.url}update`,order,{headers:header});
+  updateOrder=(order:Order):Observable<any>=>{
+    const url=`${this.url}update`;
+    return this.http.put<any>(url,order,{withCredentials:true}).pipe(map((response:any)=>{
+      return this.errorResponseService.check(response);
+    }));     
   }
 }

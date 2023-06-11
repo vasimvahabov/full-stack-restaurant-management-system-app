@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { CustomValidators } from 'src/app/helpers/customValidators';
 import { Employee } from '../../../models/employee';
 import { Position } from '../../../models/position';
@@ -19,8 +18,10 @@ export class AddEmployeeComponent {
   public emailMsg:string|undefined;
   public phoneNumberMsg:string|undefined;
 
-  constructor(private empService:EmployeeService,private posService:PositionService,
-    private ref:MatDialogRef<AddEmployeeComponent>,private router:Router){ 
+  constructor(
+    private empService:EmployeeService,
+    private posService:PositionService,
+    private ref:MatDialogRef<AddEmployeeComponent>){
     this.empGroup=new FormGroup({
       firstName:new FormControl('',[
         Validators.required,
@@ -43,11 +44,14 @@ export class AddEmployeeComponent {
       ]),
       position:new FormControl('',[Validators.required]),
     });
+  }
+
+  ngOnInit(){
     this.posService.getActivePositions().subscribe((response)=>{
-      if(response===undefined)
-        this.router.navigateByUrl("/error");
-      else 
+      if(response!==-1)
         this.positions=response;
+      else 
+        this.ref.close({data:null});
     });
   }
 
@@ -69,9 +73,7 @@ export class AddEmployeeComponent {
       posStatus:null
     };    
     this.empService.addEmployee(employee).subscribe(response=>{ 
-      if(response===undefined)
-        this.router.navigateByUrl("/error");
-      else if(typeof(response)==='string'){
+      if(typeof(response)==='string'){
         const msg=response; 
         if(msg.includes("email")){
           this.emailMsg=msg;
@@ -84,6 +86,8 @@ export class AddEmployeeComponent {
             this.emailMsg=undefined;
         }
       }
+      else if(response===-1)
+        this.ref.close({data:null}); 
       else{
         employee=response;
         employee.phone=`+994${employee.phone}`;
@@ -93,7 +97,6 @@ export class AddEmployeeComponent {
         employee.posStatus=position.status; 
         this.ref.close({data:employee});
       }
-      
     });
   } 
 }

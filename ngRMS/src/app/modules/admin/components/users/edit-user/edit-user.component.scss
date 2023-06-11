@@ -5,41 +5,41 @@
 }
 
 .edit-user-container{
-    background-color: rgb(243, 243, 186);
+  background-color: rgb(243, 243, 186);
     
-    .user-form{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;  
-      height:100%;
-      width: 380px;
-      border-radius: 5px;
-      margin:auto; 
+  .user-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;  
+    height:100%;
+    width: 380px;
+    border-radius: 5px;
+    margin:auto; 
   
-      h1{
-        color:rgb(78, 54, 54);
-        font-size: 28px;
-      }  
+    h1{
+      color:rgb(78, 54, 54);
+      font-size: 28px;
+    }  
 
-      .toogle-reset-password{
-        display: flex;
-        align-items: center; 
-        justify-content: flex-start;
-        margin-bottom: 10px;
-      }
+    .toogle-reset-password{
+      display: flex;
+      align-items: center; 
+      justify-content: flex-start;
+      margin-bottom: 10px;
+    }
 
-      .buttons-container{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top:25px;
-        
-        button:first-child{
-          margin-right: 20px;
-        }
+    .buttons-container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top:25px;
+       
+      button:first-child{
+        margin-right: 20px;
       }
     }
   }
+}
   
   

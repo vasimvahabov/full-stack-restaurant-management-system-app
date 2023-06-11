@@ -1,10 +1,6 @@
 package com.example.rms.controllers;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
+import java.io.IOException; 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,68 +8,73 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestBody; 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.rms.dtos.OrderedProductDTO;
-import com.example.rms.services.OrderedProductService;
+import com.example.rms.models.OrderedProductModel;
+import com.example.rms.services.OrderedProductService; 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowagie.text.DocumentException;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;   
 
 @RestController 
-@RequestMapping("/ordered-products")
+@RequestMapping("ordered-product")
 public class OrderedProductController {
 
   @Autowired
-  OrderedProductService orderedProductService;
+  OrderedProductService _opService;
 
-  @GetMapping("/list/dto/getBy")
-  public ResponseEntity<List<OrderedProductDTO>> getOrderedProductDTOsByOrderId(@RequestParam("orderId") String orderId){
-    List<OrderedProductDTO> orderedProductDTOs=this.orderedProductService.getOrderedProductDTOsByOrderId(orderId);
-    return ResponseEntity.ok(orderedProductDTOs);
+  @GetMapping("list")
+  public ResponseEntity<List<OrderedProductModel>> getOPsByOrderId(
+                                                    @RequestParam("orderId") int orderId){ 
+    List<OrderedProductDTO> opDTOs=this._opService.getOPsByOrderId(orderId);
+    List<OrderedProductModel> opModels=new ArrayList<>();
+    for(var item:opDTOs){
+      OrderedProductModel opModel=OrderedProductModel.builder()
+                                                          .orderId(item.orderId)
+                                                          .prodId(item.prodId)
+                                                          .prodTitle(item.prodTitle)
+                                                          .prodCount(item.prodCount)
+                                                          .cateTitle(item.cateTitle)
+                                                          .total(item.total)
+                                                        .build();
+      opModels.add(opModel);
+    }
+    return ResponseEntity.ok(opModels);
   }
 
-  @PostMapping("/add")
-  public ResponseEntity<Void> addOrderedProduct(@RequestBody LinkedHashMap<String,String> orderedProductDetails) {
-    this.orderedProductService.addOrderedProduct(orderedProductDetails);
+  @PostMapping("add")
+  public ResponseEntity<Void> addOP(@RequestBody OrderedProductModel opModel){
+    OrderedProductDTO opDTO=new OrderedProductDTO(opModel.orderId,opModel.prodId,null,null,null,null); 
+    this._opService.addOP(opDTO);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  @DeleteMapping("/minus")
-  public ResponseEntity<Void> minusOrderedProductByOrderIdAndProdId(
-           @RequestBody LinkedHashMap<String,String> orderedProductDetails){
-    this.orderedProductService.minusOrderedProductByOrderIdAndProdId(orderedProductDetails);
+  @DeleteMapping("minus")
+  public ResponseEntity<Void> minusOPByOrderIdAndProdId(
+                               @RequestBody OrderedProductModel opModel){ 
+    OrderedProductDTO opDTO=new OrderedProductDTO(opModel.orderId,opModel.prodId,null,null,null,null); 
+    this._opService.minusOPByOrderIdAndProdId(opDTO);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  @DeleteMapping("/delete")
-  public ResponseEntity<Void> deleteOrderedProductsByOrderIdAndProdId(
-		  @RequestBody LinkedHashMap<String,String> orderedProductDetails){
-    this.orderedProductService.deleteOrderedProductsByOrderIdAndProdId(orderedProductDetails);
+  @DeleteMapping("delete")
+  public ResponseEntity<Void> deleteOPsByOrderIdAndProdId(
+                               @RequestBody OrderedProductModel opModel){
+    OrderedProductDTO opDTO=new OrderedProductDTO(opModel.orderId,opModel.prodId,null,null,null,null); 
+    this._opService.deleteOPByOrderIdAndProdId(opDTO);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  @GetMapping(value = "/get-pdf")
-  public ResponseEntity<Void> getPDF(@RequestHeader(name = "orderDetails") String json,
-		  HttpServletResponse response) throws DocumentException, IOException{
-	ObjectMapper mapper=new ObjectMapper();
-
-	@SuppressWarnings(value = "unchecked")
-	LinkedHashMap<String,String> orderDetails=mapper.readValue(json,LinkedHashMap.class);
-
-	DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-    String currentDateTime = dateFormatter.format(new Date());
-
-	String headerKey = "Content-Disposition";
-    String headerValue = "attachment; filename=bill_" + currentDateTime + ".pdf";
-    response.setHeader (headerKey,headerValue);
-
-	this.orderedProductService.getPDF(orderDetails,response);
-	response.getOutputStream().flush();
-	response.getOutputStream().close();
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  @GetMapping("get-pdf")
+  public ResponseEntity<String> getPDF(@RequestParam int orderId) 
+                                throws DocumentException, IOException{  
+    ByteArrayOutputStream outputStream=this._opService.getPDF(orderId);
+    ObjectMapper objectMapper=new ObjectMapper();
+    String json=objectMapper.writeValueAsString(outputStream.toByteArray());
+    return ResponseEntity.ok(json);
   }
 }

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog'; 
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';  
 import { Category } from 'src/app/models/category'; 
 import { CategoryService } from 'src/app/services/category.service';
 import { AddCategoryComponent } from './add-category/add-category.component';
@@ -14,11 +13,11 @@ import { EditCategoryComponent } from './edit-category/edit-category.component';
 export class CategoriesComponent {
   public categories!:Category[];
 
-  constructor(private dialog:MatDialog,private cateService:CategoryService,private router:Router){
-    cateService.getAllCategories().subscribe(response=>{
-      if(response===undefined)
-        router.navigateByUrl("/error");
-      else
+  constructor(private dialog:MatDialog,private cateService:CategoryService){}
+
+  ngOnInit(){
+    this.cateService.getAllCategories().subscribe(response=>{
+      if(response!==-1)
         this.categories=response; 
     });
   }
@@ -45,6 +44,6 @@ export class CategoriesComponent {
   }  
 
   onSlideToogle(categoryId:number){  
-    // this.cateService.changeCategoryStatus(this.adminService.token,categoryId).subscribe();
+    this.cateService.changeCategoryStatus(categoryId).subscribe();
   }
 }

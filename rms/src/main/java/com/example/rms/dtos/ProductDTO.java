@@ -1,6 +1,7 @@
 package com.example.rms.dtos;
 
 import jakarta.annotation.Nonnull;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ public class ProductDTO {
   @Nonnull
   public String title;
   @Nonnull
-  public Double price;
+  public BigDecimal price;
   public Boolean status;
   @Nonnull
   public Integer cateId;

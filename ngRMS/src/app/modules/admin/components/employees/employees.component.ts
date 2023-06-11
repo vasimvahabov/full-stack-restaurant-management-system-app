@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'; 
-import { Router } from '@angular/router'; 
 import { Employee } from '../../models/employee';  
 import { EmployeeService } from '../../services/employee.service';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
@@ -15,14 +14,14 @@ export class EmloyeesComponent {
 
   public emps!:Employee[];
 
-  constructor(private empService:EmployeeService,private dialog:MatDialog,private router:Router){ 
+  constructor(private empService:EmployeeService,private dialog:MatDialog){} 
+
+  ngOnInit(){
     this.empService.getAllEmployees().subscribe(response=>{
-      if(response===undefined)
-        this.router.navigateByUrl('/error');
-      else
+      if(response!==-1)
         this.emps=response;
     });
-  } 
+  }
 
   addEmployee(){ 
     const addEmployeeDialog=this.dialog.open(AddEmployeeComponent,{
@@ -46,10 +45,6 @@ export class EmloyeesComponent {
   }
 
   onSlideToogle=(empId:number)=>{ 
-    this.empService.changeEmployeeStatus(empId).subscribe(response=>{
-      if(response===undefined)
-        this.router.navigateByUrl("/error")
-    }); 
+    this.empService.changeEmployeeStatus(empId).subscribe();
   }
-
 }

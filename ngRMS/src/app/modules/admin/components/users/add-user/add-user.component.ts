@@ -1,8 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms'; 
-import { MatButton } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { CustomValidators } from 'src/app/helpers/customValidators';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../../models/user';
@@ -18,8 +16,9 @@ export class AddUserComponent {
   public userGroup!:FormGroup;
   public msg:string|undefined; 
 
-  constructor(private userService:UserService,
-                  private dialogRef:MatDialogRef<AddUserComponent>,private router:Router){
+  constructor(
+    private userService:UserService,
+    private dialogRef:MatDialogRef<AddUserComponent>){
     this.userGroup=new FormGroup({
       firstName:new FormControl('',[
         Validators.required,Validators.maxLength(50),
@@ -66,20 +65,15 @@ export class AddUserComponent {
       status:null
     };       
     this.userService.addUser(user).subscribe((response)=>{
-      if(response===undefined){ 
-        this.router.navigateByUrl("/error");
-        this.dialogRef.close({data:user});
-      }
+      if(response===-1)
+        this.dialogRef.close({data:null});
       else if(typeof(response)==='string'){
-        const msg=response.replace('*','username');
-        this.msg=msg; 
+        this.msg=response.replace('*','username');
         this.userGroup.controls["password"].setValue("");
         this.userGroup.controls["confirmPassword"].setValue(""); 
       }
       else{
         user=response;  
-        if(this.msg!==undefined)
-          this.msg=undefined;;
         this.dialogRef.close({data:user});
       }
     });

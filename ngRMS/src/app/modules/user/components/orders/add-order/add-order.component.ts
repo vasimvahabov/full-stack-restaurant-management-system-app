@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CustomValidators } from 'src/app/helpers/customValidators';
-import { UserService } from 'src/app/services/user.service';
 import { OrderService } from '../../../../../services/order.service';
 import { Order } from 'src/app/models/order';
-import { title } from 'process';
 
 @Component({
   selector: 'app-add-order',
@@ -14,10 +12,16 @@ import { title } from 'process';
 })
 export class AddOrderComponent {
   public titleControl!:FormControl;
+  public msg:string|undefined;
 
-  constructor(private ref:MatDialogRef<AddOrderComponent>,
-  private orderService:OrderService,private userService:UserService){
-    this.titleControl=new FormControl('',[Validators.required,Validators.maxLength(100),CustomValidators.onlyWhiteSpace]);
+  constructor(
+    private ref:MatDialogRef<AddOrderComponent>,
+    private orderService:OrderService){
+    this.titleControl=new FormControl('',[
+      Validators.required,
+      Validators.maxLength(100),
+      CustomValidators.onlyWhiteSpace
+    ]);
   }
 
   cancel(){
@@ -28,16 +32,19 @@ export class AddOrderComponent {
     const order:Order={
       id:null,
       title:this.titleControl.value.toString().trim(),
-      userId:-1,
-      userFullname:null,
+      userId:null,
+      userFullName:null,
       createdAt:null,
       updatedAt:null,
       total:null
-    };
-    console.log(order);
-    // this.orderService.addOrder(order).subscribe((response)=>{
-      // const order=response;
-      // this.ref.close({data:order});  
-    // });
+    }; 
+    this.orderService.addOrder(order).subscribe((response)=>{
+      if(response===-1)
+        this.ref.close({data:null}); 
+      else{
+        const order=response;
+        this.ref.close({data:order});  
+      }
+    });
   }
 }

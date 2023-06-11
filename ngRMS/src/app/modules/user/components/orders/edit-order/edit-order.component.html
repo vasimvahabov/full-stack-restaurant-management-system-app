@@ -4,27 +4,30 @@
 
       <div class="col-md-10">
         <label for="title" class="form-label">Title</label>
-        <input type="text" [formControl]="titleControl" class="form-control"
-        [ngClass]="{'is-invalid':(titleControl.errors),'is-valid':titleControl.errors===null}"
-        id="name">
+        <input type="text" id="title" [formControl]="titleControl" class="form-control"
+          [ngClass]="{'is-invalid':(titleControl.errors),
+                      'is-valid':titleControl.errors===null}">
         
-        <div *ngIf="titleControl.errors?.['required']; else secondNameErrTemplate" class="invalid-feedback">
+        <div *ngIf="titleControl.errors?.['required']; 
+              else secondTitleErrTemplate" class="invalid-feedback">
           <span>Title is required...</span>
         </div>  
         
-        <ng-template #secondNameErrTemplate>
-          <div *ngIf="titleControl.errors?.['onlywhitespace']; else thirdNameErrTemplate" class="invalid-feedback">
+        <ng-template #secondTitleErrTemplate>
+          <div *ngIf="titleControl.errors?.['onlywhitespace']; 
+                else thirdTitleErrTemplate" class="invalid-feedback">
             <span>Title can't contain only white space...</span>
           </div>
         </ng-template>
 
-        <ng-template #thirdNameErrTemplate>
-          <div *ngIf="titleControl.errors?.['maxlength']; else nameSuccessTemplate" class="invalid-feedback">
+        <ng-template #thirdTitleErrTemplate>
+          <div *ngIf="titleControl.errors?.['maxlength']; 
+                else titleSuccessTemplate" class="invalid-feedback">
             <span>Title mustn't owerflow 100 character...</span>
           </div>
         </ng-template>
 
-        <ng-template #nameSuccessTemplate>
+        <ng-template #titleSuccessTemplate>
           <div *ngIf="titleControl.errors===null" class="valid-feedback">
             <span>Looks good!</span>
           </div>
@@ -33,9 +36,13 @@
       </div>
 
       <div class="buttons-container">
-        <button mat-raised-button color="warn" (click)="cancel()" type="button">Cancel</button>
+        <button mat-raised-button color="warn" (click)="cancel()" type="button">
+          Cancel
+        </button>
         <button mat-raised-button color="primary" type="submit" 
-        [disabled]="titleControl.invalid===true">Save</button>
+                [disabled]="titleControl.invalid===true">
+          Save
+        </button>
       </div>
 
     </form> 

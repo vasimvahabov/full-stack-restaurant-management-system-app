@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs'; 
 import { Category } from '../models/category';
@@ -11,7 +11,9 @@ export class CategoryService {
 
   private url!:string;
   
-  constructor(private http:HttpClient,private errorResponseService:ErrorResponseService){
+  constructor(
+    private http:HttpClient,
+    private errorResponseService:ErrorResponseService){
     this.url="http://localhost:8080/category/";
   }
 
@@ -44,7 +46,8 @@ export class CategoryService {
   }
 
   addCategory=(category:Category):Observable<any>=>{ 
-    return this.http.post<any>(`${this.url}add`,category,{withCredentials:true}).pipe(map((response:any)=>{
+    const url=`${this.url}add`;
+    return this.http.post<any>(url,category,{withCredentials:true}).pipe(map((response:any)=>{
       return this.errorResponseService.check(response);
     }));
   }

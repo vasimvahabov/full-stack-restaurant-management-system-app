@@ -31,7 +31,6 @@ public class CategoryService {
   public CategoryDTO addCategory(CategoryDTO categoryDTO){
     Category category=new Category(null,categoryDTO.title,null);
     category=this._categoryRepository.save(category);
-    
     categoryDTO.id=category.getId();
     categoryDTO.status=true;
     categoryDTO.prodCount=this._productRepository.getProductsCountByCategoryId(category.getId());

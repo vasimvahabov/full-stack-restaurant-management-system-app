@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProductService } from '../../../../../services/product.service';
 import { CategoryService } from 'src/app/services/category.service'; 
 import { CustomValidators } from 'src/app/helpers/customValidators';
 import { Product } from '../../../../../models/product';
-import { Category } from 'src/app/models/category';
-import { AdminService } from 'src/app/services/admin.service';
+import { Category } from 'src/app/models/category'; 
 
 @Component({
   selector: 'app-add-product',
@@ -16,22 +15,37 @@ import { AdminService } from 'src/app/services/admin.service';
 export class AddProductComponent {
   
   public categories!:Category[];
-  public productGroup=this.formBuilder.group({
-    name:new FormControl('',[Validators.required,Validators.maxLength(100),CustomValidators.onlyWhiteSpace]),
-    price:new FormControl('',[Validators.required,Validators.min(0.01),Validators.max(9999.99),Validators.pattern("(^[0-9]{1,4}\\.[0-9]{1,2}$)|(^[0-9]{1,4}$)")]),
-    category:new FormControl('',Validators.required)
-  });
+  public productGroup!:FormGroup;
+  public msg:string|undefined;
 
   constructor(
     private formBuilder:FormBuilder,
-    private ref:MatDialogRef<AddProductComponent>,
     private prodService:ProductService,
-    private adminService:AdminService,
-    private cateService:CategoryService){
-    // this.cateService.getActiveCategories(this.adminService.token).subscribe(response=>{
-    //   this.categories=response; 
-    //   console.log(this.categories);
-    // });
+    private cateService:CategoryService,
+    private ref:MatDialogRef<AddProductComponent>,){
+    this.productGroup=this.formBuilder.group({
+      title:new FormControl('',[
+      Validators.required,
+      Validators.maxLength(100),
+      CustomValidators.onlyWhiteSpace
+      ]),
+      price:new FormControl('',[
+        Validators.required,
+        Validators.min(0.01),
+        Validators.max(9999.99),
+        Validators.pattern("(^[0-9]{1,4}\\.[0-9]{1,2}$)|(^[0-9]{1,4}$)")
+      ]),
+      category:new FormControl('',Validators.required)
+    });
+  }
+
+  ngOnInit(){
+    this.cateService.getActiveCategories().subscribe(response=>{
+      if(response!==-1)
+        this.categories=response;
+      else
+        this.ref.close({data:null}); 
+    });
   }
 
   cancel(){
@@ -42,20 +56,26 @@ export class AddProductComponent {
     const cateId=parseInt(this.productGroup.value.category?.toString()!);
     let product:Product={
       id:null,
-      name:this.productGroup.value.name?.toString().trim()!,
+      title:this.productGroup.value.title?.toString().trim()!,
       price:parseFloat(this.productGroup.value.price?.toString()!),
       status:null,
       cateId:cateId,
-      cateName:null,
+      cateTitle:null,
       cateStatus:null
     };
-    // this.prodService.addProduct(this.adminService.token,product).subscribe(response=>{ 
-    //   product=response;
-    //   const category:Category=this.categories.find( item=>item.id===cateId )!;
-    //   product.cateName=category.name;
-    //   product.cateStatus=category.status;
-    //   this.ref.close({data:product});
-    // });
+    this.prodService.addProduct(product).subscribe(response=>{ 
+      if(response===-1)
+        this.ref.close({data:null});
+      if(typeof(response)==='string')
+        this.msg=response.replace("*","title");
+      else{
+        product=response;
+        const category:Category=this.categories.find( item=>item.id===cateId )!;
+        product.cateTitle=category.title;
+        product.cateStatus=category.status;
+        this.ref.close({data:product});
+      }
+    });
   }
 
 }

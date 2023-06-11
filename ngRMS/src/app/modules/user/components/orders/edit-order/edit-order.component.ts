@@ -4,7 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Order } from '../../../../../models/order';
 import { OrderService } from '../../../../../services/order.service';
 import { CustomValidators } from 'src/app/helpers/customValidators';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-edit-order',
@@ -14,10 +13,15 @@ import { UserService } from 'src/app/services/user.service';
 export class EditOrderComponent {
   public titleControl!:FormControl;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private order:Order,
-              private userService:UserService,
-              private ref:MatDialogRef<EditOrderComponent>,private orderService:OrderService){
-     this.titleControl=new FormControl(this.order .title,[Validators.required,Validators.maxLength(100),CustomValidators.onlyWhiteSpace]);
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private order:Order, 
+    private ref:MatDialogRef<EditOrderComponent>,
+    private orderService:OrderService){
+    this.titleControl=new FormControl(this.order .title,[
+      Validators.required,
+      Validators.maxLength(100),
+      CustomValidators.onlyWhiteSpace 
+    ]);
   }
   
   cancel(){
@@ -29,16 +33,16 @@ export class EditOrderComponent {
     const order:Order={
       id:this.order.id,
       title:this.titleControl.value.toString().trim(),
-      userId:-1,
-      userFullname:null,
+      userId:null,
+      userFullName:null,
       createdAt:null,
       updatedAt:null,
       total:null
-    };
-    console.log(order);
-    // this.orderService.updateOrder(order).subscribe(()=>{
-    //   this.order.title=title;
-    //   this.ref.close();
-    // });
+    }; 
+    this.orderService.updateOrder(order).subscribe(response=>{
+      if(response!==-1)
+        this.order.title=title; 
+      this.ref.close(); 
+    });
   }
 }

@@ -6,7 +6,7 @@ import { AddProductToOrderComponent } from './add-product-to-order/add-product-t
 import { EditOrderComponent } from './edit-order/edit-order.component';
 import { AddOrderComponent } from './add-order/add-order.component';
 import { OrderedProductService } from 'src/app/services/ordered-product.service'; 
-import { UserService } from 'src/app/services/user.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-orders',
@@ -16,17 +16,21 @@ import { UserService } from 'src/app/services/user.service';
 export class OrdersComponent {
   public orders!:Order[]; 
 
-  constructor(private orderService:OrderService,private dialog:MatDialog,
-    private orderedProductService:OrderedProductService,public userService:UserService){}
+  constructor(
+    private orderService:OrderService,
+    private dialog:MatDialog, 
+    private opService:OrderedProductService
+  ){}
 
   ngOnInit(){ 
     this.getOrders();
   }
 
   getOrders(){   
-    // this.orderService.getInCompleteOrder().subscribe(response=>{
-      // this.orders=re/sponse;
-    // }); 
+    this.orderService.getInCompleteOrdersByUserId().subscribe(response=>{
+      if(response!==-1)
+        this.orders=response;
+    }); 
   }
 
   addOrder(){
@@ -35,7 +39,6 @@ export class OrdersComponent {
       disableClose:true, 
     }); 
     addOrderDialog.afterClosed().subscribe((response)=>{
-      console.log(response.data);
       if(response.data!==null){ 
         const order:Order=response.data;
         this.orders.push(order);
@@ -52,11 +55,13 @@ export class OrdersComponent {
   }
 
   deleteOrder(orderId:number){
-    // this.orderService.deleteOrder(orderId).subscribe(()=>{
-    //   this.orders=this.orders.filter((item)=>{
-    //     return item.id!==orderId;
-    //   });
-    // });
+    this.orderService.deleteOrder(orderId).subscribe(response=>{
+      if(response===0){
+        this.orders=this.orders.filter((item)=>{
+          return item.id!==orderId;
+        });
+      }
+    });
   }
 
   openOrderedProductsList(orderId:number){
@@ -77,22 +82,31 @@ export class OrdersComponent {
   }
 
   completeOrder=(orderId:number)=>{
-    // this.orderService.completeOrder(orderId).subscribe(()=>{
-    //   this.orders=this.orders.filter((item)=>{
-    //     return item.id!==orderId;
-    //   })
-    // });
+    this.orderService.completeOrder(orderId).subscribe(response=>{
+      if(response===0){
+        this.orders=this.orders.filter((item)=>{
+          return item.id!==orderId;
+        });
+      }
+    });
   }  
 
   getPDF=(orderId:number)=>{  
-    // this.orderedProductService.getPDF(this.userService.userId,orderId,this.userService.authDetails).subscribe((blob)=>{
-    //   const downloadURL = window.URL.createObjectURL(blob);
-    //   const a = document.createElement('a');
-    //   a.href = downloadURL;
-    //   const dateFormat:string=formatDate(Date.now(),'yyyy_MM_dd_HH_mm_ss',"en-US");
-    //   a.download=`bill_${dateFormat}.pdf`;
-    //   a.click();
-    //  });
+    this.opService.getPDF(orderId).subscribe(response=>{
+      if(response!==-1){  
+        const utf_8 = atob(response); 
+        var bytes = new Uint8Array(utf_8.length);
+        for (var i = 0; i < utf_8.length; i++) 
+          bytes[i] = utf_8.charCodeAt(i);
+          
+        const blob=new Blob([bytes]);
+        const downloadURL = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadURL;
+        const dateFormat=formatDate(Date.now(),'yyyy_MM_dd_HH_mm_ss',"en-US");
+        a.download=`bill_${dateFormat}.pdf`;
+        a.click();
+      }     
+    });
   }
-
 }

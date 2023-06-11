@@ -3,7 +3,6 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Category } from 'src/app/models/category';
 import { CustomValidators } from 'src/app/helpers/customValidators';
-import { AdminService } from 'src/app/services/admin.service';
 import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
@@ -12,13 +11,17 @@ import { CategoryService } from 'src/app/services/category.service';
   styleUrls: ['./add-category.component.scss']
 })
 export class AddCategoryComponent{
-  public nameControl!:FormControl;
+  public titleControl!:FormControl;
+  public msg!:string|undefined;
 
   constructor(
     private ref:MatDialogRef<AddCategoryComponent>,
-    private adminService:AdminService,
     private cateService:CategoryService){
-    this.nameControl=new FormControl('',[Validators.required,Validators.maxLength(100),CustomValidators.onlyWhiteSpace]);
+    this.titleControl=new FormControl('',[
+      Validators.required,
+      Validators.maxLength(100),
+      CustomValidators.onlyWhiteSpace
+    ]);
   }
 
   cancel(){
@@ -28,13 +31,20 @@ export class AddCategoryComponent{
   onSubmit(){
     let category:Category={
       id:null,
-      name:this.nameControl.value.toString().trim(),
+      title:this.titleControl.value.toString().trim(),
       status:null,
       prodCount:null
-    };
-    // this.cateService.addCategory(this.adminService.token,category).subscribe((response)=>{
-    //   category=response;
-    //   this.ref.close({data:category})
-    // });
+    }; 
+    this.cateService.addCategory(category).subscribe(response=>{
+      if(response===-1)
+        this.ref.close({data:null});
+      else if(typeof(response)==='string'){
+        this.msg=response.replace("*","title");
+      }
+      else{
+        category=response; 
+        this.ref.close({data:category})
+      }
+    });
   }
 }

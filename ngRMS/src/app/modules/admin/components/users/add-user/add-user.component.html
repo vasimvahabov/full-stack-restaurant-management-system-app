@@ -5,22 +5,25 @@
       <!--------------------------------  firstName field ----------------------------------->
       <div class="col-md-10">
         <label for="firstName" class="form-label">First Name</label>
-        <input type="text" formControlName="firstName" class="form-control"
-        [ngClass]="{'is-invalid':(userGroup.controls['firstName'].errors),'is-valid':userGroup.controls['firstName'].errors===null}"
-        id="firstName">
+        <input type="text" id="firstName" formControlName="firstName" class="form-control"
+        [ngClass]="{'is-invalid':(userGroup.controls['firstName'].errors),
+                    'is-valid':userGroup.controls['firstName'].errors===null}">
 
-        <div *ngIf="userGroup.controls['firstName'].errors?.['required']; else secondFirstNameErrTemplate" class="invalid-feedback">
+        <div *ngIf="userGroup.controls['firstName'].errors?.['required']; 
+              else secondFirstNameErrTemplate" class="invalid-feedback">
           <span>First Name is required...</span>
         </div> 
 
         <ng-template #secondFirstNameErrTemplate>
-          <div *ngIf="userGroup.controls['firstName'].errors?.['maxlength']; else thirdFirstNameErrTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['firstName'].errors?.['maxlength']; 
+                else thirdFirstNameErrTemplate" class="invalid-feedback">
             <span>First Name mustn't owerflow 50 character...</span>
           </div>
         </ng-template>
 
         <ng-template #thirdFirstNameErrTemplate>
-          <div *ngIf="userGroup.controls['firstName'].errors?.['whitespace']; else firstNameSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['firstName'].errors?.['whitespace']; 
+                else firstNameSuccessTemplate" class="invalid-feedback">
             <span>First Name can't contain white spaces...</span>
           </div>
         </ng-template>
@@ -37,22 +40,25 @@
       <!--------------------------------  lastName field ----------------------------------->
       <div class="col-md-10">
         <label for="lastName" class="form-label">Last Name</label>
-        <input type="text" formControlName="lastName" class="form-control"
-        [ngClass]="{'is-invalid':(userGroup.controls['lastName'].errors),'is-valid':userGroup.controls['lastName'].errors===null}"
-        id="lastName">
+        <input type="text" id="lastName" formControlName="lastName" class="form-control"
+        [ngClass]="{'is-invalid':(userGroup.controls['lastName'].errors),
+                    'is-valid':userGroup.controls['lastName'].errors===null}">
         
-        <div *ngIf="userGroup.controls['lastName'].errors?.['required']; else secondLastNameErrTemplate" class="invalid-feedback">
+        <div *ngIf="userGroup.controls['lastName'].errors?.['required']; 
+              else secondLastNameErrTemplate" class="invalid-feedback">
           <span>Last Name is required...</span>
         </div> 
 
         <ng-template #secondLastNameErrTemplate>
-          <div *ngIf="userGroup.controls['lastName'].errors?.['maxlength']; else thirdLastNameErrTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['lastName'].errors?.['maxlength']; 
+                else thirdLastNameErrTemplate" class="invalid-feedback">
             <span>Last Name mustn't owerflow 50 character...</span>
           </div>
         </ng-template>
 
         <ng-template #thirdLastNameErrTemplate>
-          <div *ngIf="userGroup.controls['lastName'].errors?.['whitespace']; else lastNameSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['lastName'].errors?.['whitespace']; 
+                else lastNameSuccessTemplate" class="invalid-feedback">
             <span>Last Name can't contain white spaces...</span>
           </div>
         </ng-template>
@@ -70,7 +76,8 @@
       <div class="col-md-10">
         <label for="username" class="form-label">Username</label>
         <input type="text" formControlName="username" class="form-control"
-        [ngClass]="{'is-invalid':userGroup.controls['username'].errors || msg!==undefined,'is-valid':userGroup.controls['username'].errors===null && msg===undefined}"
+        [ngClass]="{'is-invalid':userGroup.controls['username'].errors || msg!==undefined,
+                    'is-valid':userGroup.controls['username'].errors===null && msg===undefined}"
         id="username">
 
         <div *ngIf="msg!==undefined;else secondUsernameErrTemplate" class="invalid-feedback">
@@ -78,19 +85,22 @@
         </div>
         
         <ng-template #secondUsernameErrTemplate>
-          <div *ngIf="userGroup.controls['username'].errors?.['required']; else thirdUsernameErrTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['username'].errors?.['required']; 
+                else thirdUsernameErrTemplate" class="invalid-feedback">
             <span>Username is required...</span>
           </div> 
         </ng-template>
 
         <ng-template #thirdUsernameErrTemplate>
-          <div *ngIf="userGroup.controls['username'].errors?.['maxlength']; else fourthUsernameErrTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['username'].errors?.['maxlength']; 
+                else fourthUsernameErrTemplate" class="invalid-feedback">
             <span>Username mustn't owerflow 100 character...</span>
           </div>
         </ng-template>
 
         <ng-template #fourthUsernameErrTemplate>
-          <div *ngIf="userGroup.controls['username'].errors?.['whitespace']; else usernameSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['username'].errors?.['whitespace']; 
+                else usernameSuccessTemplate" class="invalid-feedback">
             <span>Username can't contain white spaces...</span>
           </div>
         </ng-template>
@@ -109,21 +119,25 @@
         <label for="password" class="form-label">Password</label>
         <input type="password" 
         formControlName="password" class="form-control"
-        [ngClass]="{'is-invalid':(userGroup.controls['password'].errors),'is-valid':userGroup.controls['password'].errors===null}"
+        [ngClass]="{'is-invalid':(userGroup.controls['password'].errors),
+                    'is-valid':userGroup.controls['password'].errors===null}"
         id="password">
         
-        <div *ngIf="userGroup.controls['password'].errors?.['required']; else secondPasswordErrTemplate" class="invalid-feedback">
+        <div *ngIf="userGroup.controls['password'].errors?.['required']; 
+              else secondPasswordErrTemplate" class="invalid-feedback">
           <span>Password is required...</span>
         </div> 
         
         <ng-template #secondPasswordErrTemplate>
-          <div *ngIf="userGroup.controls['password'].errors?.['maxlength']; else thirdPasswordErrTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['password'].errors?.['maxlength']; 
+                else thirdPasswordErrTemplate" class="invalid-feedback">
             <span>Password mustn't owerflow 100 character...</span>
           </div>
         </ng-template>
 
         <ng-template #thirdPasswordErrTemplate>
-          <div *ngIf="userGroup.controls['password'].errors?.['minlength']; else passwordSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.controls['password'].errors?.['minlength']; 
+                else passwordSuccessTemplate" class="invalid-feedback">
             <span>Password must be at least 8 character...</span>
           </div>
         </ng-template>
@@ -141,25 +155,27 @@
       <!-------------------------------- confirm password field ----------------------------------->
       <div class="col-md-10">
         <label for="confirmPassword" class="form-label">Confirm Password</label>
-        <input type="password" 
-        [ngClass]="{
-          'is-invalid':userGroup.controls['confirmPassword'].errors || userGroup.value.password?.toString()!==userGroup.value.confirmPassword?.toString(),
-          'is-valid':userGroup.controls['confirmPassword'].errors===null && userGroup.value.password?.toString()===userGroup.value.confirmPassword?.toString()
-        }"
-        formControlName="confirmPassword" class="form-control" id="confirmPassword">
+        <input type="password" formControlName="confirmPassword" class="form-control" id="confirmPassword"
+        [ngClass]="{'is-invalid':userGroup.controls['confirmPassword'].errors ||
+                      userGroup.value.password?.toString()!==userGroup.value.confirmPassword?.toString(),
+                    'is-valid':userGroup.controls['confirmPassword'].errors===null && 
+                      userGroup.value.password?.toString()===userGroup.value.confirmPassword?.toString()}">
 
-        <div *ngIf="userGroup.controls['confirmPassword'].errors?.['required']; else secondConfirmPassErrTemplate" class="invalid-feedback">
+        <div *ngIf="userGroup.controls['confirmPassword'].errors?.['required']; 
+              else secondConfirmPassErrTemplate" class="invalid-feedback">
           <span>Confirm Password is required...</span>
         </div> 
         
         <ng-template #secondConfirmPassErrTemplate>
-          <div *ngIf="userGroup.value.password?.toString()!==userGroup.value.confirmPassword?.toString(); else passwordSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="userGroup.value.password?.toString()!==userGroup.value.confirmPassword?.toString(); 
+                else passwordSuccessTemplate" class="invalid-feedback">
             <span>Passwords don't match...</span>
           </div> 
         </ng-template> 
 
         <ng-template #passwordSuccessTemplate>
-          <div  *ngIf="userGroup.controls['confirmPassword'].errors===null && userGroup.value.password?.toString()===userGroup.value.confirmPassword?.toString()" class="valid-feedback">
+          <div class="valid-feedback" *ngIf="userGroup.controls['confirmPassword'].errors===null &&
+                      userGroup.value.password?.toString()===userGroup.value.confirmPassword?.toString()">
             Looks good!
           </div>
         </ng-template>  
@@ -171,7 +187,13 @@
       <!-------------------------------- Buttons Container ----------------------------------->
       <div class="buttons-container">
         <button mat-raised-button color="warn" (click)="cancel()" type="button">Cancel</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="userGroup.invalid===true || userGroup.value.password?.toString()!==userGroup.value.confirmPassword?.toString()">Add</button>
+        <button 
+            mat-raised-button 
+            color="primary" type="submit" 
+            [disabled]="userGroup.invalid===true ||       
+            userGroup.value.password?.toString()!==userGroup.value.confirmPassword?.toString()">
+          Add
+        </button>
       </div>
       <!-------------------------------- Buttons Container ----------------------------------->
 

@@ -3,21 +3,25 @@
     <span class="material-icons">add</span>
   </div> 
   <div *ngFor="let order of orders" class="order">
-    <span class="order-title">{{order.title+" => "}}&nbsp;&nbsp;&nbsp;&nbsp;{{"$ "+order.total!.toFixed(2)}}</span> 
+    <span class="order-title">
+      {{order.title+" => "}}&nbsp;&nbsp;&nbsp;&nbsp;
+      {{"$ "+order.total!.toFixed(2)}}</span> 
     <div class="btns-container">
-      <button class="button" (click)="getPDF(order.id!)">
+      <button class="button" [class.btn-enabled]="order.total!==0" 
+              (click)="getPDF(order.id!)" [disabled]="order.total===0">
         <span class="material-icons-outlined btn-text">receipt_long</span>
       </button>
-      <button class="button" (click)="completeOrder(order.id!)">
+      <button class="button" [class.btn-enabled]="order.total!==0" 
+              (click)="completeOrder(order.id!)" [disabled]="order.total===0">
         <span class="material-icons-outlined btn-text">done</span>
       </button>
-      <button class="button" (click)="openOrderedProductsList(order.id!)">
+      <button class="button btn-enabled" (click)="openOrderedProductsList(order.id!)">
         <span class="material-icons-outlined btn-text">menu_book</span>
       </button>
-      <button class="button" (click)="deleteOrder(order.id!)">
+      <button class="button btn-enabled" (click)="deleteOrder(order.id!)">
         <span class="material-icons-outlined btn-text">delete</span>
       </button>
-      <button class="button" (click)="editOrder(order!)">
+      <button class="button btn-enabled" (click)="editOrder(order!)">
         <span class="material-icons-outlined btn-text">edit</span>
       </button>
       </div>

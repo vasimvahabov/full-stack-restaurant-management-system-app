@@ -18,8 +18,8 @@
             <td>{{order.updatedAt}}</td>
             <td>${{order.total}}</td>
             <td>  
-              <span (click)="openProductsList(order.id)" class="material-icons-outlined">menu_book</span> 
-              <span (click)="getPDF(order.userId,order.id)" class="material-icons-outlined">print</span> 
+              <span (click)="openProductsList(order.id!)" class="material-icons-outlined">menu_book</span> 
+              <span (click)="getPDF(order.id!)" class="material-icons-outlined">print</span> 
             </td>
           </tr>
         </tbody>

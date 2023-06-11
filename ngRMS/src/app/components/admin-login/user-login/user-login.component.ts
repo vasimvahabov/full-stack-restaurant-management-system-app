@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef } from '@angular/material/dialog'; 
 import { CustomValidators } from 'src/app/helpers/customValidators';
 import { User } from 'src/app/modules/admin/models/user';
-import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -16,11 +15,21 @@ export class UserLoginComponent{
   public loginGroup!:FormGroup;
   public msg:string|undefined;
 
-  constructor(private builder:FormBuilder,private userService:UserService,
-     private dialogRef:MatDialogRef<UserLoginComponent>,private authService:AuthService){
+  constructor(
+    private builder:FormBuilder,
+    private userService:UserService,
+    private dialogRef:MatDialogRef<UserLoginComponent>){
     this.loginGroup=this.builder.group({
-      username:new FormControl('',[Validators.required,Validators.maxLength(100),CustomValidators.whiteSpace]),
-      password:new FormControl('',[Validators.required,Validators.minLength(8),Validators.maxLength(100)])
+      username:new FormControl('',[
+        Validators.required,
+        Validators.maxLength(100),
+        CustomValidators.whiteSpace
+      ]),
+      password:new FormControl('',[
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(100)
+      ])
     })
   }
 
@@ -29,7 +38,8 @@ export class UserLoginComponent{
   }
 
   showLoginBtn=()=>{
-    if(this.loginGroup.controls['username'].invalid===true || this.loginGroup.controls['password'].invalid==true)
+    if(this.loginGroup.controls['username'].invalid===true || 
+       this.loginGroup.controls['password'].invalid==true)
       return true;
     return false;
   }
@@ -44,15 +54,15 @@ export class UserLoginComponent{
       status:null
     };  
     this.userService.logIn(user).subscribe((response:any)=>{
-      this.loginGroup.controls['username'].setValue("");
-      this.loginGroup.controls['password'].setValue("");
-
-      if(response===null)
+      if(response===0)
         this.dialogRef.close({event:1}) 
-      else if(response===undefined)
-        this.dialogRef.close({event:-1})
-      else
+      else if(response===-1)
+        this.dialogRef.close();
+      else if(typeof(response)==='string'){
+        this.loginGroup.controls['username'].setValue("");
+        this.loginGroup.controls['password'].setValue("");
         this.msg=response;
+      }
     });
   }
 }

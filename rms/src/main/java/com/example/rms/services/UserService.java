@@ -5,7 +5,13 @@ import com.example.rms.helpers.AES;
 import com.example.rms.entities.User;
 import com.example.rms.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +21,20 @@ public class UserService {
   @Autowired
   private UserRepository _userRepository;
   
-  public Integer login(UserDTO userDTO){
+  public int login(UserDTO userDTO) throws InvalidKeyException, 
+                                          NoSuchAlgorithmException, 
+                                          BadPaddingException, 
+                                          NoSuchPaddingException, 
+                                          IllegalBlockSizeException,
+                                          InvalidAlgorithmParameterException{
     String keyUserPassword="key!userpassword";
     String ivUserPassword="iv!useR?password";
     String encryptedPassword=AES.encrypt(userDTO.password,keyUserPassword,ivUserPassword); 
    
     User user=_userRepository.login(userDTO.username,encryptedPassword);
     if(user==null)  
-      throw new EntityNotFoundException("Invalid username or password!!!"); 
-    userDTO.password=null;  
-    Integer userId=user.getId();
+      throw new EntityNotFoundException("Invalid username or password!!!");  
+    int userId=user.getId();
     return userId;
   } 
 
@@ -33,13 +43,18 @@ public class UserService {
     return userDTOs;
   } 
 
-  public void changeUserStatus(Integer userId){  
+  public void changeUserStatus(int userId){  
     User user=this._userRepository.findById(userId).orElse(null);
     user.setStatus(!user.getStatus());
     this._userRepository.save(user);
   }
 
-  public void updateUser(UserDTO userDTO){ 
+  public void updateUser(UserDTO userDTO) throws InvalidKeyException, 
+                                                 NoSuchAlgorithmException, 
+                                                 BadPaddingException, 
+                                                 NoSuchPaddingException, 
+                                                 IllegalBlockSizeException,
+                                                 InvalidAlgorithmParameterException{
     User user=this._userRepository.findById(userDTO.id).orElse(null);
     user.setFirstName(userDTO.firstName);
     user.setLastName(userDTO.lastName);
@@ -53,12 +68,17 @@ public class UserService {
     this._userRepository.save(user);
   }
 
-  public UserDTO addUser(UserDTO userDTO) {
+  public UserDTO addUser(UserDTO userDTO) throws InvalidKeyException, 
+                                                  NoSuchAlgorithmException, 
+                                                  BadPaddingException, 
+                                                  NoSuchPaddingException, 
+                                                  IllegalBlockSizeException,
+                                                  InvalidAlgorithmParameterException{
     String keyUserPassword="key!userpassword";
     String ivUserPassword="iv!useR?password";
     String encryptedPassword=AES.encrypt(userDTO.password,keyUserPassword,ivUserPassword);
     User user=new User(null,userDTO.username,encryptedPassword,
-			userDTO.firstName,userDTO.lastName,userDTO.status);
+			userDTO.firstName,userDTO.lastName,null);
     user=this._userRepository.save(user);
     userDTO.id=user.getId(); 
     userDTO.status=true;

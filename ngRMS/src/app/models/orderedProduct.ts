@@ -1,8 +1,8 @@
 export interface OrderedProduct{
-  orderId:string;
-  prodId:string;
-  prodName:string;
-  cateName:string;
-  prodCount:number;
-  total:number; 
+  orderId:number|null;
+  prodId:number|null;
+  prodTitle:string|null;
+  prodCount:number|null;
+  cateTitle:string|null;
+  total:number|null; 
 }

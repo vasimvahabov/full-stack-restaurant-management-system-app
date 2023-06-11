@@ -12,25 +12,21 @@ export class AdminComponent {
 
   private intervalId!:NodeJS.Timer;
    
-  constructor(private router:Router,private adminService:AdminService,private authService:AuthService){
+  constructor(
+    private router:Router,
+    private adminService:AdminService,
+    private authService:AuthService
+  ){}
+
+  ngOnInit(){
     this.authService.getLogIn().subscribe((response:number)=>{
-      if(response===0){ 
-        this.adminService.refreshToken().subscribe(response=>{
-          if(response===undefined)
-            this.router.navigateByUrl("/error");
-        });
-      }
+      if(response===0)
+        this.adminService.refreshToken().subscribe();
       else
         this.authService.initLogIn();
     });
-  }
-
-  ngOnInit(){
     this.intervalId=setInterval(()=>{
-      this.adminService.refreshToken().subscribe(response=>{
-        if(response===undefined)
-          this.router.navigateByUrl("/error");
-      });
+      this.adminService.refreshToken().subscribe();
     },900000);  
   }
 
@@ -40,10 +36,8 @@ export class AdminComponent {
 
   logOut(){
     this.adminService.logOut().subscribe((response:any)=>{
-      if(response===null)
-        this.router.navigateByUrl(''); 
-      else if(response===undefined)
-        this.router.navigateByUrl("/error")
+      if(response!==-1)
+        this.router.navigateByUrl('');  
     });
   }
 }

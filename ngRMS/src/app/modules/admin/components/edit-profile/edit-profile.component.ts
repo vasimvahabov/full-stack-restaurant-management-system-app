@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { CustomValidators } from 'src/app/helpers/customValidators';
 import { Admin } from 'src/app/models/admin'; 
 import { AdminService } from 'src/app/services/admin.service';
@@ -16,37 +15,41 @@ export class EditProfileComponent {
   private admin!:Admin;
   public showResetInputs!:boolean;
 
-  constructor(private builder:FormBuilder,private router:Router,private adminService:AdminService){ 
-       this.adminService.getAdmin().subscribe(response=>{
-        if(response===undefined)
-          this.router.navigateByUrl("/error");
-        else{
-          this.admin=response;
-          this.adminGroup=this.builder.group({
-            username:new FormControl(this.admin.username,[  
-              Validators.required,
-              Validators.maxLength(100),
-              CustomValidators.whiteSpace
-            ]),
-            password:new FormControl('',[
-              Validators.required,
-              Validators.minLength(8),
-              Validators.maxLength(100)
-            ]),
-            confirmPassword:new FormControl('',[
-              Validators.required,
-              Validators.minLength(8),
-              Validators.maxLength(100)
-            ])
-          });
-        }
-      }); 
+  constructor(private builder:FormBuilder,private adminService:AdminService){ 
     this.showResetInputs=false;
+  }
+
+  ngOnInit(){
+    this.adminService.getAdmin().subscribe(response=>{ 
+      if(response!==-1){
+        this.admin=response;
+        this.adminGroup=this.builder.group({
+          username:new FormControl(this.admin.username,[  
+            Validators.required,
+            Validators.maxLength(100),
+            CustomValidators.whiteSpace
+          ]),
+          password:new FormControl('',[
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(100)
+          ]),
+          confirmPassword:new FormControl('',[
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(100)
+          ])
+        });
+      }
+    }); 
   }
 
   showSaveBtn(){
     if(this.showResetInputs===true)
-      if(this.adminGroup.controls['password'].value?.toString()!==this.adminGroup.controls['confirmPassword'].value?.toString() || this.adminGroup.controls['password'].invalid===true || this.adminGroup.controls['confirmPassword'].invalid===true)
+      if(this.adminGroup.controls['password'].value?.toString()!== 
+                                                      this.adminGroup.controls['confirmPassword'].value?.toString() || 
+        this.adminGroup.controls['password'].invalid===true || 
+        this.adminGroup.controls['confirmPassword'].invalid===true)
         return true;
     if(this.adminGroup.controls['username'].invalid===true)
       return true;
@@ -64,9 +67,7 @@ export class EditProfileComponent {
       admin.password=password;
     };  
     this.adminService.updateAdmin(admin).subscribe((response)=>{
-      if(response===undefined)
-        this.router.navigateByUrl('/error');
-      else{
+      if(response===0){
         this.admin.username=admin.username;
         this.showResetInputs=false;
       }

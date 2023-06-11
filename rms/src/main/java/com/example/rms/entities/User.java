@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor; 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Data
 @Entity  
@@ -21,18 +22,19 @@ public class User {
   @Column(name="id_")
   private Integer id;
 
-  @Column(name="username_")
+  @Column(name="username_",nullable = false,length = 100,unique = true)
   private String username;
 
-  @Column(name="password_")
+  @Column(name="password_",nullable = false,length = 280)
   private String password;
 
-  @Column(name="first_name_")
+  @Column(name="first_name_",nullable = false,length = 50)
   private String firstName;
 
-  @Column(name="last_name_")
+  @Column(name="last_name_",nullable = false,length = 50)
   private String lastName;
 
-  @Column(name="status_",insertable = false)
+  @ColumnDefault(value = "true")
+  @Column(name="status_",nullable = false,insertable = false)
   private Boolean status;
 }

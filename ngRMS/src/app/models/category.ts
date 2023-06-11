@@ -1,6 +1,6 @@
 export interface Category{
   id:number|null;
-  name:string;
+  title:string;
   status:boolean|null;
   prodCount:number|null;
 }

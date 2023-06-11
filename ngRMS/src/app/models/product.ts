@@ -1,9 +1,9 @@
 export interface Product{
   id:number|null;
-  name:string;
+  title:string;
   price:number;
   status:boolean|null;
   cateId:number;
-  cateName:string|null;
+  cateTitle:string|null;
   cateStatus:boolean|null;
 }

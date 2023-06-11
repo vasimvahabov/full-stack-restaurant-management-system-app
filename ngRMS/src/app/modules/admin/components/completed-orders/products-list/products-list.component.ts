@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { OrderedProduct } from 'src/app/models/orderedProduct';
-import { AdminService } from 'src/app/services/admin.service';
+import { OrderedProduct } from 'src/app/models/orderedProduct'; 
 import { OrderedProductService } from 'src/app/services/ordered-product.service';
 
 @Component({
@@ -14,13 +13,15 @@ export class ProductsListComponent {
   public productsList!:OrderedProduct[];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private orderId:string,
-    private adminService:AdminService,
+    @Inject(MAT_DIALOG_DATA) private orderId:number,
     private dialogRef:MatDialogRef<ProductsListComponent>,
-    private orderedProductService:OrderedProductService){
-    // this.orderedProductService.getOrderedProductDTOsByOrderId(this.orderId).subscribe(response=>{
-      // this.productsList=response;
-    // });
+    private opService:OrderedProductService){
+    this.opService.getOPsByOrderId(this.orderId).subscribe(response=>{
+      if(response!==-1)
+        this.productsList=response;
+      else
+        this.close();
+    });
   }
 
   close(){

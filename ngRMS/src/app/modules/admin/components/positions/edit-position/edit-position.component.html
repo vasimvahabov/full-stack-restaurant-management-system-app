@@ -4,27 +4,31 @@
 
       <div class="col-md-10">
         <label for="title" class="form-label">Name</label>
-        <input type="text" [formControl]="titleControl" class="form-control"
-        [ngClass]="{'is-invalid':titleControl.errors || msg!==undefined,'is-valid':titleControl.errors===null && msg===undefined}" id="title">
+        <input type="text" id="title" [formControl]="titleControl" class="form-control"
+        [ngClass]="{'is-invalid':titleControl.errors || msg!==undefined,
+                    'is-valid':titleControl.errors===null && msg===undefined}">
         
         <div *ngIf="msg!==undefined; else secondTitleErrTemplate" class="invalid-feedback">
           <span>{{msg}}</span>
         </div> 
         
         <ng-template #secondTitleErrTemplate>
-          <div *ngIf="titleControl.errors?.['required']; else thirdTitleErrTemplate" class="invalid-feedback">
+          <div *ngIf="titleControl.errors?.['required']; 
+                else thirdTitleErrTemplate" class="invalid-feedback">
             <span>Title is required...</span>
           </div> 
         </ng-template>
 
         <ng-template #thirdTitleErrTemplate>
-          <div *ngIf="titleControl.errors?.['onlywhitespace']; else fourthTitleErrTemplate" class="invalid-feedback">
+          <div *ngIf="titleControl.errors?.['onlywhitespace']; 
+                else fourthTitleErrTemplate" class="invalid-feedback">
             <span>Title can't contain only white space...</span>
           </div> 
         </ng-template>
 
         <ng-template #fourthTitleErrTemplate>
-          <div *ngIf="titleControl.errors?.['maxlength']; else titleSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="titleControl.errors?.['maxlength']; 
+                else titleSuccessTemplate" class="invalid-feedback">
             <span>Title mustn't owerflow 100 character...</span>
           </div> 
         </ng-template>

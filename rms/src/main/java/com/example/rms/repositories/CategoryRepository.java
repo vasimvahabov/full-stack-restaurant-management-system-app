@@ -8,11 +8,20 @@ import com.example.rms.entities.Category;
 
 public interface CategoryRepository extends CrudRepository<Category,Integer>{
 
-  @Query("select new com.example.rms.dtos.CategoryDTO(c.id,c.title,c.status,count(p))"
-  		   +" from Category c left join Product p on c.id=p.cateId group by(c)")
+  @Query("select new com.example.rms.dtos.CategoryDTO("
+                                                  +"c.id,"
+                                                  +"c.title,"
+                                                  +"c.status,"
+                                                  +"count(p)"
+                                             +") from Category c left join Product p "
+                                                  +"on c.id=p.category.id group by(c)")
   public List<CategoryDTO> getAllCategories();
 
-  @Query(value ="select new com.example.rms.dtos.CategoryDTO(id,title,"
-          + "status,cast(null as int)) from Category where status=true")
+  @Query("select new com.example.rms.dtos.CategoryDTO("
+                                                  +"id,"
+                                                  +"title,"
+                                                  +"status,"
+                                                  +"cast(null as long)"
+                                             +") from Category where status=true")
   public List<CategoryDTO> getActiveCategories();
 }

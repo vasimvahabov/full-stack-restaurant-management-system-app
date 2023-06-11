@@ -1,22 +1,22 @@
 package com.example.rms.models;
-
+ 
 import jakarta.annotation.Nonnull; 
 import lombok.Builder;
 
 @Builder
 public class AdminDashboardModel {
   @Nonnull
-  public long categoriesCount;
+  public Long categoriesCount;
   @Nonnull
-  public long productsCount;
+  public Long productsCount;
   @Nonnull
-  public long completedOrdersCount;
+  public Long completedOrdersCount;
   @Nonnull
-  public long positionsCount;
+  public Long positionsCount;
   @Nonnull
-  public long employeesCount;
+  public Long employeesCount;
   @Nonnull
-  public long adminsCount;
+  public Long adminsCount;
   @Nonnull
-  public long usersCount; 
+  public Long usersCount; 
 }

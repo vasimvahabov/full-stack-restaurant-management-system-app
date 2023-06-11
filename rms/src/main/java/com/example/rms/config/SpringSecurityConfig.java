@@ -17,7 +17,8 @@ public class SpringSecurityConfig{
   private final JWTAuthFilter _jwtAuthFilter;
 	
   public SpringSecurityConfig(AuthEntryPoint authEntryPoint,
-                             LoginAuthFilter loginAuthFilter,JWTAuthFilter jwtAuthFilter){ 
+                            LoginAuthFilter loginAuthFilter,
+                            JWTAuthFilter jwtAuthFilter){ 
     this._authEntryPoint=authEntryPoint;
     this._loginAuthFilter=loginAuthFilter;
     this._jwtAuthFilter=jwtAuthFilter; 
@@ -36,26 +37,20 @@ public class SpringSecurityConfig{
       .cors().and()
       .authorizeHttpRequests(authz-> authz 
     	.requestMatchers(
-    	  "/admin/logIn", 
-    	  "/user/logIn"
+    	  "/admin/logIn",
+            "/user/logIn"
     	).permitAll()   
-        .requestMatchers("/admin/**","/position/**","employee/**").hasAnyRole("admin") 
+        .requestMatchers("/admin/**","/position/**","employee/**").hasRole("admin") 
         .requestMatchers("/**").hasAnyRole("admin","user")
-        .anyRequest().authenticated()
+        .anyRequest().permitAll()
       ).httpBasic();
      
     return httpSecurity.build();
-  }
-  
-//  @Bean
-//  public PasswordEncoder encoder(){
-//    return new BCryptPasswordEncoder();
-//  }
-  
+  } 
   
   @Bean  
   public WebMvcConfigurer corsConfigurer() {
-    return new WebMvcConfigurer() {
+    return new WebMvcConfigurer(){
       @Override
       public void addCorsMappings(CorsRegistry registry) {
         registry

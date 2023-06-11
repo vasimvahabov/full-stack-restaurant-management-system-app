@@ -1,6 +1,7 @@
 package com.example.rms.models;
 
 import jakarta.annotation.Nonnull;
+import java.math.BigDecimal;
 import lombok.Builder;
 
 @Builder
@@ -9,7 +10,7 @@ public class ProductModel {
   @Nonnull
   public String title;
   @Nonnull
-  public Double price;
+  public BigDecimal price;
   public Boolean status;
   @Nonnull
   public Integer cateId;

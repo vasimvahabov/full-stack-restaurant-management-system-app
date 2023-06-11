@@ -8,20 +8,30 @@
   <div class="mat-dialog-content" mat-dialog-content>
     
     <div class="col-sm-5"> 
-      <select (change)="filterProducts()" [formControl]="categoryControl" class="form-select w-100" [ngClass]="{'is-invalid':(categoryControl.errors),'is-valid':categoryControl.errors===null}" name="category">
+      <select (change)="filterProducts()" name="category" 
+        [formControl]="categoryControl" class="form-select w-100" 
+        [ngClass]="{'is-invalid':(categoryControl.errors),
+                    'is-valid':categoryControl.errors===null}">
         <option value="">--- Select Category ---</option>
-        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option> 
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{category.title}}
+        </option> 
       </select>
     </div>
 
     <div class="col-sm-5">
-      <select class="form-select w-100" [ngClass]="{'is-invalid':(productControl.errors),'is-valid':productControl.errors===null}" [formControl]="productControl" name="product">
+      <select class="form-select w-100" [formControl]="productControl" name="product"
+        [ngClass]="{'is-invalid':(productControl.errors),
+                    'is-valid':productControl.errors===null}">
         <option value="">--- Select Product ---</option>
-        <option *ngFor="let product of filteredProds" [value]="product.id">{{product.name}}</option> 
+        <option *ngFor="let product of filteredProds" [value]="product.id">
+          {{product.title}}
+        </option> 
       </select>
     </div>
 
-    <button  (click)="addProductToOrder()" class="btn btn-primary" id="btn-add-product" [disabled]="categoryControl.invalid===true || productControl.invalid===true">
+    <button (click)="addProductToOrder()" class="btn btn-primary" id="btn-add-product" 
+            [disabled]="categoryControl.invalid===true || productControl.invalid===true">
       <span class="material-icons-outlined">exposure_plus_1</span> 
     </button>
 
@@ -40,21 +50,21 @@
           <tr *ngFor="let orderedProduct of orderedProducts">
             <td>
               <div class="actions">
-                <button class="btn btn-primary" (click)="plusOrderedProduct(orderedProduct.prodId)">
+                <button class="btn btn-primary" (click)="plusOrderedProduct(orderedProduct.prodId!)">
                   <span class="material-icons-outlined">add</span>
                 </button>
-                <button class="btn btn-warning" (click)="minusOrderedProduct(orderedProduct.prodId)">
+                <button class="btn btn-warning" (click)="minusOrderedProduct(orderedProduct.prodId!)">
                   <span class="material-icons-outlined">remove</span>
                 </button> 
-                <button class="btn btn-danger" (click)="deleteOrderedProduct(orderedProduct.prodId)">
+                <button class="btn btn-danger" (click)="deleteOrderedProduct(orderedProduct.prodId!)">
                   <span class="material-icons-outlined">cancel</span> 
                 </button> 
               </div>
             </td>
-            <td>{{orderedProduct.prodName}}</td>
-            <td>{{orderedProduct.cateName}}</td>
+            <td>{{orderedProduct.prodTitle}}</td>
+            <td>{{orderedProduct.cateTitle}}</td>
             <td>{{orderedProduct.prodCount}}</td>
-            <td>{{orderedProduct.total.toFixed(2)}}$</td>
+            <td>{{orderedProduct.total!.toFixed(2)}}$</td>
           </tr> 
         </tbody>
       </table>

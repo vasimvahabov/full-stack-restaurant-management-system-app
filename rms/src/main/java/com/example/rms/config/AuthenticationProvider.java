@@ -14,12 +14,15 @@ import java.util.Base64;
 import java.util.Date; 
 import org.springframework.beans.factory.annotation.Value;    
 import org.springframework.stereotype.Component; 
-import jakarta.annotation.PostConstruct;   
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.annotation.PostConstruct;    
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.List; 
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import java.util.List;   
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication; 
 import org.springframework.security.core.GrantedAuthority; 
@@ -44,7 +47,7 @@ public class AuthenticationProvider{
     this.secretKey=Base64.getEncoder().encodeToString(secretKey.getBytes());
   }
   
-  public String generateToken(Integer userId,String role){
+  public String generateToken(int userId,String role){
     Date now=new Date();
     Date valid=new Date(now.getTime()+960000); 
     Algorithm algorithm=Algorithm.HMAC256(secretKey);  
@@ -70,23 +73,32 @@ public class AuthenticationProvider{
       List<GrantedAuthority> claims=Arrays.asList(
         new SimpleGrantedAuthority(role.asString())
       );   
-      Integer userId=decoded.getClaim("userId").asInt(); 
-      
+      int userId=decoded.getClaim("userId").asInt(); 
       return new UsernamePasswordAuthenticationToken(userId,null,claims);
-      
-    }catch(JWTVerificationException jwtException){
-        System.out.println(jwtException.getMessage());
-        throw jwtException;
+    }catch(JWTVerificationException jwtException){ 
+      throw jwtException;
     }
   }
   
-  public Authentication validateAdmin(AdminDTO adminDTO){
-    Integer userId=this._adminService.login(adminDTO);   
+  public Authentication validateAdmin(AdminDTO adminDTO) throws 
+                                                          InvalidAlgorithmParameterException,
+                                                          InvalidKeyException,
+                                                          NoSuchPaddingException,
+                                                          BadPaddingException,
+                                                          IllegalBlockSizeException, 
+                                                          NoSuchAlgorithmException{
+    int userId=this._adminService.login(adminDTO);   
     return new UsernamePasswordAuthenticationToken(userId,null,null);
   }
   
-  public Authentication validateUser(UserDTO userDTO){
-    Integer userId=this._userService.login(userDTO);
+  public Authentication validateUser(UserDTO userDTO) throws 
+                                                          InvalidAlgorithmParameterException,
+                                                          InvalidKeyException,
+                                                          NoSuchPaddingException,
+                                                          BadPaddingException,
+                                                          IllegalBlockSizeException, 
+                                                          NoSuchAlgorithmException{
+    int userId = this._userService.login(userDTO); 
     return new UsernamePasswordAuthenticationToken(userId,null,null);
   }
 }

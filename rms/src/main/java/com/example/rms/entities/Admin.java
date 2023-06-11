@@ -21,9 +21,9 @@ public class Admin {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name="username_")
+  @Column(name="username_",nullable = false,length = 100,unique = true)
   private String username;
 
-  @Column(name="password_")
+  @Column(name="password_",nullable = false,length = 280)
   private String password;
 }

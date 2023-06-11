@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import {  FormControl,Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { CustomValidators } from 'src/app/helpers/customValidators'; 
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../../models/user';
@@ -15,15 +14,16 @@ export class EditUserComponent {
 
   public showResetInputs:boolean=false; 
   public msg:string|undefined;
-
   public validationFirstName!:FormControl;
   public validationLastName!:FormControl;
   public validationUsername!:FormControl;
   public validationPassword!:FormControl;
   public validationConfirmPassword!:FormControl;
 
-  constructor(private dialogRef:MatDialogRef<EditUserComponent>,private router:Router,
-             @Inject(MAT_DIALOG_DATA) public user:User,private userService:UserService){
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public user:User,
+    private userService:UserService,
+    private dialogRef:MatDialogRef<EditUserComponent>){
     this.validationFirstName=new FormControl(this.user.firstName,[
       Validators.required,
       CustomValidators.whiteSpace
@@ -81,13 +81,10 @@ export class EditUserComponent {
     if(this.showResetInputs===true)
       user.password=this.validationPassword.value?.toString()!;
     this.userService.updateUser(user).subscribe(response=>{
-      if(response===undefined){
-        this.router.navigateByUrl("/error");
+      if(response===-1)
         this.dialogRef.close();
-      }
       else if(typeof(response)==='string'){       
-        const msg=response.replace('*','username');
-        this.msg=msg;
+        this.msg=response.replace('*','username');
         if(this.showResetInputs){
           this.validationPassword.setValue("");
           this.validationConfirmPassword.setValue(""); 

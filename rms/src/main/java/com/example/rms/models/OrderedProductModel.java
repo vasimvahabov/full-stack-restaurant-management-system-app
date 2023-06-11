@@ -1,10 +1,14 @@
 package com.example.rms.models;
+ 
+import java.math.BigDecimal;
+import lombok.Builder;
 
+@Builder
 public class OrderedProductModel {
-  public int orderId;
-  public int prodId; 
-  public String prodName;
-  public String cateName;
-  public int prodCount;
-  public double total;
+  public Integer orderId; 
+  public Integer prodId; 
+  public String prodTitle;
+  public Long prodCount;
+  public String cateTitle;
+  public BigDecimal total;
 } 

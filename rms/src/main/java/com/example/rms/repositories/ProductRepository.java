@@ -9,15 +9,28 @@ import com.example.rms.entities.Product;
 
 public interface ProductRepository extends CrudRepository<Product,Integer>{
 
-  @Query("select new com.example.rms.dtos.ProductDTO(p.id,p.title,p.price,p.status,c.id,c.title,c.status)"
-  		  +" from Product as p inner join Category as c on p.cateId=c.id")
+  @Query("select new com.example.rms.dtos.ProductDTO("
+                                                +"p.id,"
+                                                +"p.title,"
+                                                +"p.price,"
+                                                +"p.status,"
+                                                +"p.category.id,"
+                                                +"p.category.title,"
+                                                +"p.category.status"
+                                             +") from Product p")
   public List<ProductDTO> getAllProducts();
 
-  @Query("select new com.example.rms.dtos.ProductDTO(p.id,p.title,p.price,"
-          + "cast(null as boolean),c.id,c.title,cast(null as boolean)) from Product "
-          + "as p inner join Category as c on p.cateId=c.id where p.status=true")
+  @Query("select new com.example.rms.dtos.ProductDTO("
+                                            +"p.id,"
+                                            +"p.title,"
+                                            +"p.price,"
+                                            +"cast(null as boolean),"
+                                            +"p.category.id,"
+                                            +"cast(null as string),"
+                                            +"cast(null as boolean)"
+                                        +") from Product p where p.status=true")
   public List<ProductDTO> getActiveProducts();
 
   @Query(value="select count(*) from products_ where cate_id_=:CATE_ID",nativeQuery = true)
-  public Long getProductsCountByCategoryId(@Param("CATE_ID") Integer categoryId);
+  public Long getProductsCountByCategoryId(@Param("CATE_ID") int categoryId);
 }

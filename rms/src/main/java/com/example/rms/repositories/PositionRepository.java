@@ -8,8 +8,11 @@ import com.example.rms.entities.Position;
 
 public interface PositionRepository extends CrudRepository<Position,Integer>{
 
-  @Query(value="select new com.example.rms.dtos.PositionDTO(id,title,status)"
-  		                       + "from Position p where p.status=true")
+  @Query(value="select new com.example.rms.dtos.PositionDTO("
+                                                       +"id,"
+                                                       +"title,"
+                                                       +"status"
+                                                  +") from Position p where p.status=true")
   public List<PositionDTO> getActivePositions();
 
   @Query(value="select new com.example.rms.dtos.PositionDTO(id,title,status) from Position p")

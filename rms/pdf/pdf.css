@@ -1,10 +1,10 @@
-/*html,body{
+html,body{
   height:100%;
   width:100%;
 } 
 
 *{
-	box-shadow: b
+  box-shadow: b
 }
 
 .container{
@@ -14,12 +14,12 @@
 }
 
 .container span{
-	display: block;
-	padding: auto;
+  display: block;
+  padding: auto;
 }
 
 .table{
-	border :2px; 
+  border :2px; 
 }
 
 .title{
@@ -29,4 +29,5 @@
   text-align:center;
   max-height: 100%;
 }
- */
+
+

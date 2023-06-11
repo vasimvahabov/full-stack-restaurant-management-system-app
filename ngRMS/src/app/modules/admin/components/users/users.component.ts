@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router'; 
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/user';
 import { AddUserComponent } from './add-user/add-user.component';
@@ -14,20 +13,17 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 export class UsersComponent {
   public usersList!:User[];
 
-  constructor(private userService:UserService,private dialog:MatDialog,private router:Router){
+  constructor(private userService:UserService,private dialog:MatDialog){}
+  
+  ngOnInit(){
     this.userService.getAllUsers().subscribe((response)=>{
-      if(response===undefined)
-        this.router.navigateByUrl("/error");
-      else
+      if(response!==-1)
         this.usersList=response; 
     });
-  } 
+  }
 
   onSlideToogle(userId:number){  
-    this.userService.changeUserStatus(userId).subscribe(response=>{
-      if(response===undefined)
-        this.router.navigateByUrl("/error");
-    });
+    this.userService.changeUserStatus(userId).subscribe();
   }
 
   addUser(){ 

@@ -5,22 +5,25 @@
       <!----------------------------------- First Name Field ---------------------------------->
       <div class="col-md-10">
         <label for="firstName" class="form-label">First Name</label>
-        <input type="text" formControlName="firstName" class="form-control"
-        [ngClass]="{'is-invalid':(empGroup.controls['firstName'].errors),'is-valid':empGroup.controls['firstName'].errors===null}"
-        id="firstName">
+        <input type="text" id="firstName" formControlName="firstName" class="form-control"
+        [ngClass]="{'is-invalid':(empGroup.controls['firstName'].errors),
+                    'is-valid':empGroup.controls['firstName'].errors===null}">
 
-        <div *ngIf="empGroup.controls['firstName'].errors?.['required']; else secondFirstNameErrorTemplate" class="invalid-feedback">
+        <div *ngIf="empGroup.controls['firstName'].errors?.['required']; 
+              else secondFirstNameErrorTemplate" class="invalid-feedback">
           <span>First name is required...</span>
         </div> 
 
         <ng-template #secondFirstNameErrorTemplate>
-          <div *ngIf="empGroup.controls['firstName'].errors?.['maxlength']; else thirdFirstNameErrorTemplate" class="invalid-feedback">
+          <div *ngIf="empGroup.controls['firstName'].errors?.['maxlength']; 
+                else thirdFirstNameErrorTemplate" class="invalid-feedback">
             <span>First name mustn't owerflow 50 character...</span>
           </div> 
         </ng-template>
 
         <ng-template #thirdFirstNameErrorTemplate>
-          <div *ngIf="empGroup.controls['firstName'].errors?.['whitespace']; else firstNameSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="empGroup.controls['firstName'].errors?.['whitespace']; 
+                else firstNameSuccessTemplate" class="invalid-feedback">
             <span>First name can't contain white spaces...</span>
           </div> 
         </ng-template>
@@ -38,22 +41,25 @@
       <!----------------------------------- Last Name Field ---------------------------------->
       <div class="col-md-10">
         <label for="lastName" class="form-label">Last Name</label>
-        <input type="text" formControlName="lastName" class="form-control"
-        [ngClass]="{'is-invalid':(empGroup.controls['lastName'].errors),'is-valid':empGroup.controls['lastName'].errors===null}"
-        id="lastName">
+        <input type="text" id="lastName" formControlName="lastName" class="form-control"
+        [ngClass]="{'is-invalid':empGroup.controls['lastName'].errors,
+                    'is-valid':empGroup.controls['lastName'].errors===null}">
         
-        <div *ngIf="empGroup.controls['lastName'].errors?.['required']; else secondLastNameErrorTemplate" class="invalid-feedback">
+        <div *ngIf="empGroup.controls['lastName'].errors?.['required']; 
+              else secondLastNameErrorTemplate" class="invalid-feedback">
           <span>Last name is required...</span>
         </div> 
 
         <ng-template #secondLastNameErrorTemplate>
-          <div *ngIf="empGroup.controls['lastName'].errors?.['maxlength']; else thirdLastNameErrorTemplate" class="invalid-feedback">
+          <div *ngIf="empGroup.controls['lastName'].errors?.['maxlength']; 
+                else thirdLastNameErrorTemplate" class="invalid-feedback">
             <span>Last name mustn't owerflow 50 character...</span>
           </div> 
         </ng-template>
 
         <ng-template #thirdLastNameErrorTemplate>
-          <div *ngIf="empGroup.controls['lastName'].errors?.['whitespace']; else lastNameSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="empGroup.controls['lastName'].errors?.['whitespace']; 
+                else lastNameSuccessTemplate" class="invalid-feedback">
             <span>Last name can't contain white spaces...</span>
           </div> 
         </ng-template>
@@ -71,28 +77,31 @@
       <!----------------------------------- Email Field ---------------------------------->
       <div class="col-md-10">
         <label for="email" class="form-label">Email</label>
-        <input type="text" formControlName="email" class="form-control"
-        [ngClass]="{'is-invalid':empGroup.controls['email'].errors || emailMsg!==undefined,'is-valid':empGroup.controls['email'].errors===null && emailMsg===undefined}"
-        id="email">
+        <input type="text" id="email" formControlName="email" class="form-control" 
+        [ngClass]="{'is-invalid':empGroup.controls['email'].errors || emailMsg!==undefined,
+                    'is-valid':empGroup.controls['email'].errors===null && emailMsg===undefined}">
 
         <div *ngIf="emailMsg!==undefined; else secondEmailErrorTemplate" class="invalid-feedback">
           <span>{{emailMsg}}</span>
         </div> 
 
         <ng-template #secondEmailErrorTemplate>
-          <div *ngIf="empGroup.controls['email'].errors?.['required']; else thirdEmailErrorTemplate" class="invalid-feedback">
+          <div *ngIf="empGroup.controls['email'].errors?.['required']; 
+                else thirdEmailErrorTemplate" class="invalid-feedback">
             <span>Email is required...</span>
           </div> 
         </ng-template>
 
         <ng-template #thirdEmailErrorTemplate>
-          <div *ngIf="empGroup.controls['email'].errors?.['maxlength']; else fourthEmailErrorTemplate" class="invalid-feedback">
+          <div *ngIf="empGroup.controls['email'].errors?.['maxlength']; 
+                else fourthEmailErrorTemplate" class="invalid-feedback">
             <span>Email mustn't owerflow 100 character...</span>
           </div> 
         </ng-template>
 
         <ng-template #fourthEmailErrorTemplate>
-          <div *ngIf="empGroup.controls['email'].errors?.['email']; else emailSuccessTemplate" class="invalid-feedback">
+          <div *ngIf="empGroup.controls['email'].errors?.['email']; 
+                else emailSuccessTemplate" class="invalid-feedback">
             <span>Email is not valid...</span>
           </div> 
         </ng-template>
@@ -111,22 +120,31 @@
       <div class="col-md-10">
         <label for="phoneNumber" class="form-label">Phone Number</label>
         <div class="input-group">
-          <span class="input-group-text" aria-label="Employee phone number" aria-describedby="phoneNumber">+994</span>          
-          <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber" [ngClass]="{'is-invalid':empGroup.controls['phoneNumber'].errors || phoneNumberMsg!==undefined,'is-valid':empGroup.controls['phoneNumber'].errors===null && phoneNumberMsg===undefined}" aria-label="Phone number field">
+          <span class="input-group-text" aria-label="Employee phone number" aria-describedby="phoneNumber">
+            +994
+          </span>          
+          <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber" 
+              [ngClass]="{'is-invalid':empGroup.controls['phoneNumber'].errors ||
+                                       phoneNumberMsg!==undefined,
+                          'is-valid':empGroup.controls['phoneNumber'].errors===null && 
+                                     phoneNumberMsg===undefined}" aria-label="Phone number field">
         </div> 
 
-        <div *ngIf="phoneNumberMsg!==undefined; else secondPhoneNumberErrTemplate" class="custom-invalid-feedback">
+        <div *ngIf="phoneNumberMsg!==undefined; 
+              else secondPhoneNumberErrTemplate" class="custom-invalid-feedback">
           <span>{{phoneNumberMsg}}</span>
         </div> 
 
         <ng-template #secondPhoneNumberErrTemplate>
-          <div *ngIf="empGroup.controls['phoneNumber'].errors?.['required']; else thirdPhoneNumberErrTemplate" class="custom-invalid-feedback">
+          <div *ngIf="empGroup.controls['phoneNumber'].errors?.['required']; 
+              else thirdPhoneNumberErrTemplate" class="custom-invalid-feedback">
             <span>Phone number is required...</span>
           </div> 
         </ng-template>  
 
         <ng-template #thirdPhoneNumberErrTemplate>
-          <div *ngIf="empGroup.controls['phoneNumber'].errors?.['pattern']; else phoneNumberSuccessTemplate" class="custom-invalid-feedback">
+          <div *ngIf="empGroup.controls['phoneNumber'].errors?.['pattern']; 
+                else phoneNumberSuccessTemplate" class="custom-invalid-feedback">
             <span>Phone number is not valid...</span>
           </div> 
         </ng-template>  
@@ -145,12 +163,14 @@
       <div class="col-md-10">
         <label for="position" class="form-label">Position Name</label>
         <select id="position" formControlName="position" class="form-control"
-        [ngClass]="{'is-invalid':(empGroup.controls['position'].errors),'is-valid':empGroup.controls['position'].errors===null}">
+        [ngClass]="{'is-invalid':(empGroup.controls['position'].errors),
+                    'is-valid':empGroup.controls['position'].errors===null}">
           <option value="">--Select position--</option>
           <option *ngFor="let position of positions" [value]="position.id">{{position.title}}</option>
         </select> 
 
-        <div *ngIf="empGroup.controls['position'].errors?.['required']; else positionSuccessTemplate" class="invalid-feedback">
+        <div *ngIf="empGroup.controls['position'].errors?.['required']; 
+              else positionSuccessTemplate" class="invalid-feedback">
           <span>Position is required...</span>
         </div>
 

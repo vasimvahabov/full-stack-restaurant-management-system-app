@@ -35,8 +35,7 @@ public class PositionService{
   }
 
   public PositionDTO addPosition(PositionDTO positionDTO){
-    Position position=new Position();
-    position.setTitle(positionDTO.title);
+    Position position=new Position(null,positionDTO.title,null); 
     position=_positionRepository.save(position);  
     positionDTO.id=position.getId();
     positionDTO.status=true;

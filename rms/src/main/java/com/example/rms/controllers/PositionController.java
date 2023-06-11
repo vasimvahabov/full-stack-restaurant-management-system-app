@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController 
-@RequestMapping("/position")
+@RequestMapping("position")
 public class PositionController {
 
   @Autowired
@@ -29,9 +29,9 @@ public class PositionController {
     List<PositionModel> activePositionModels=new ArrayList<>();
     for(var item:activePositionDTOs){
       PositionModel positionModel=PositionModel.builder()
-                                              .id(item.id)
-                                              .title(item.title)
-                                              .status(item.status)
+                                                .id(item.id)
+                                                .title(item.title)
+                                                .status(item.status)
                                               .build();
       activePositionModels.add(positionModel);
     }
@@ -44,9 +44,9 @@ public class PositionController {
     List<PositionModel> positionModels=new ArrayList<>();
     for(var item:positionDTOs){
       PositionModel positionModel=PositionModel.builder()
-                                              .id(item.id)
-                                              .title(item.title)
-                                              .status(item.status)
+                                                .id(item.id)
+                                                .title(item.title)
+                                                .status(item.status)
                                               .build();
       positionModels.add(positionModel);
     }
@@ -61,14 +61,14 @@ public class PositionController {
 
   @PutMapping("update")
   public ResponseEntity<Void> updatePosition(@RequestBody PositionModel positionModel){
-    PositionDTO positionDTO=new PositionDTO(positionModel.id,positionModel.title,positionModel.status);
+    PositionDTO positionDTO=new PositionDTO(positionModel.id,positionModel.title,null);
     this._positionService.updatePosition(positionDTO);
     return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
   }
 
   @PostMapping("add")
   public ResponseEntity<PositionModel> addPosition(@RequestBody PositionModel positionModel){
-    PositionDTO positionDTO=new PositionDTO(positionModel.id,positionModel.title,positionModel.status);
+    PositionDTO positionDTO=new PositionDTO(null,positionModel.title,null);
     positionDTO=this._positionService.addPosition(positionDTO);
     positionModel.id=positionDTO.id;
     positionModel.status=positionDTO.status;

@@ -1,72 +1,56 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs'; 
 import { OrderedProduct } from '../models/orderedProduct';
+import { ErrorResponseService } from './errorResponseChecker';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderedProductService {
 
-  constructor(private http:HttpClient){}
+  private url:string;
 
-  // getOrderedProductDTOsByOrderId=(orderId:string):Observable<OrderedProduct[]>=>{
-  //   const encodedOrderId=encodeURIComponent(orderId);
-  //   const header=new HttpHeaders({
-  //     'Content-Type'  : 'application/json',
-  //     // 'Authorization' : 'Basic '+window.btoa(`${authDetails.username}:${authDetails.password}`)
-  //   });
-
-  //   return this.http.get<OrderedProduct[]>(`http://localhost:8080/ordered-products/list/dto/getBy?orderId=${encodedOrderId}`,{headers:header})
-  //   .pipe(map((data:any)=>{
-  //     return data.map((item:any)=>{
-  //       return new OrderedProduct(
-  //         item.orderId,item.prodId,item.prodName,
-  //         item.cateName,item.prodCount,item.total
-  //       );
-  //     });
-  //   }));
-  // }
-
-  getPDF=(userId:number,orderId:number):Observable<Blob>=>{
-    const orderDetails:object={ userId, orderId };
-    const header=new HttpHeaders({
-      'Content-Type':  'application/json',
-      // 'Authorization': `Bearer ${this.token}`,
-      'orderDetails':JSON.stringify(orderDetails)
-    });
-    return this.http.get<Blob>("http://localhost:8080/ordered-products/get-pdf",{
-      headers:header,
-      responseType: 'blob' as 'json'
-    });
+  constructor(
+    private http:HttpClient,
+    private errorResponseService:ErrorResponseService){
+    this.url="http://localhost:8080/ordered-product/";
   }
 
-  addOrderedProduct(orderedProductDetails:object):Observable<void>{
-    const header=new HttpHeaders({
-      'Content-Type'  : 'application/json',
-      // 'Authorization' : 'Basic '+window.btoa(`${authDetails.username}:${authDetails.password}`),
-    });
-    return this.http.post<void>("http://localhost:8080/ordered-products/add",orderedProductDetails,{headers:header});
+  getOPsByOrderId=(orderId:number):Observable<any>=>{
+    const url=`${this.url}list?orderId=${orderId}`;
+    return this.http.get<any>(url,{withCredentials:true}).pipe(map(response=>{
+      return this.errorResponseService.check(response);
+    }));
   }
 
-  minusOrderedProductByOrderIdAndProdId(orderedProductDetails:object){
-    const header=new HttpHeaders({
-      'Content-Type'  : 'application/json',
-      // 'Authorization' : 'Basic '+window.btoa(`${authDetails.username}:${authDetails.password}`)
-    });
-    return this.http.delete("http://localhost:8080/ordered-products/minus",{
-      body:orderedProductDetails,
-      headers:header
-    });
+  getPDF=(orderId:number):Observable<any>=>{
+    const url=`${this.url}get-pdf?orderId=${orderId}`;
+    return this.http.get<any>(url,{
+      withCredentials:true
+    }).pipe(map((response)=>{ 
+      return this.errorResponseService.check(response);
+    }));
+  }
+
+  addOP(op:OrderedProduct):Observable<any>{ 
+    const url=`${this.url}add`;
+    return this.http.post<any>(url,op,{withCredentials:true}).pipe(map(response=>{
+      return this.errorResponseService.check(response);
+    }));
+  }
+
+  minusOPByOrderIdAndProdId(orderedProduct:OrderedProduct){
+    const url=`${this.url}minus`;
+    return this.http.delete(url,{body:orderedProduct,withCredentials:true}).pipe(map(response=>{
+      return this.errorResponseService.check(response);
+    }));
   } 
 
-  deleteOrderedProductsByOrderIdAndProdId(orderedProductDetails:object){
-    const header=new HttpHeaders({
-      'Content-Type'  : 'application/json',
-      // 'Authorization' : 'Basic '+window.btoa(`${authDetails.username}:${authDetails.password}`)
-    });
-    return this.http.delete("http://localhost:8080/ordered-products/delete",{
-      body:orderedProductDetails
-    });
+  deleteOPsByOrderIdAndProdId(orderedProduct:OrderedProduct){ 
+    const url=`${this.url}delete`;
+    return this.http.delete(url,{body:orderedProduct,withCredentials:true}).pipe(map(response=>{
+      return this.errorResponseService.check(response);
+    }));
   }
 }

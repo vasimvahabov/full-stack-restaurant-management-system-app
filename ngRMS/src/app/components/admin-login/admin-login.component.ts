@@ -18,16 +18,28 @@ export class AdminLoginComponent {
   public loginGroup!:FormGroup;
   public msg:string|undefined;
 
-  constructor(private router:Router,private dialog:MatDialog,
-                          private adminService:AdminService,private authService:AuthService){
+  constructor(
+    private router:Router,
+    private dialog:MatDialog,
+    private adminService:AdminService,
+    private authService:AuthService){
     this.loginGroup=new FormGroup({
-      username:new FormControl('',[Validators.required,Validators.maxLength(100),CustomValidators.whiteSpace]),
-      password:new FormControl('',[Validators.required,Validators.minLength(8),Validators.maxLength(100)])
+      username:new FormControl('',[
+        Validators.required,
+        Validators.maxLength(100),
+        CustomValidators.whiteSpace
+      ]),
+      password:new FormControl('',[
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(100)
+      ])
     });
   }
 
   showLoginBtn(){
-    if(this.loginGroup.controls['username'].invalid==true || this.loginGroup.controls['password'].invalid==true)
+    if(this.loginGroup.controls['username'].invalid==true || 
+       this.loginGroup.controls['password'].invalid==true)
       return true;
     return false;
   }
@@ -39,18 +51,15 @@ export class AdminLoginComponent {
       id:null
     };  
     this.adminService.logIn(admin).subscribe(response=>{ 
-      if(response===null){   
+      if(response===0){   
         this.authService.setLogIn();
         this.router.navigateByUrl("/admin"); 
-      } 
-      else if(response===undefined)
-        this.router.navigateByUrl("/error"); 
-      else{
+      }  
+      else if(typeof(response)==='string'){
         this.loginGroup.controls['username'].setValue("");
         this.loginGroup.controls['password'].setValue("");
         this.msg=response;
-      }
-        
+      }        
     }); 
   }
 
@@ -59,10 +68,10 @@ export class AdminLoginComponent {
       disableClose:true
     });
     userLoginDialog.afterClosed().subscribe(response=>{
-      if(response.event===1)
-        this.router.navigateByUrl("/user");
-      if(response.event===-1)
-        this.router.navigateByUrl("/error");
+      if(response.event===1){
+        this.authService.setLogIn(); 
+        this.router.navigateByUrl("user"); 
+      }
     });
   }
 

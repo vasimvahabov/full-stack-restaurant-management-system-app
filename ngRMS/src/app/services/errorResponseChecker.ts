@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { ErrorResponse } from "../models/errorResponse";
 import { AuthService } from "./auth.service";
 
@@ -7,7 +8,7 @@ import { AuthService } from "./auth.service";
 })
 export class  ErrorResponseService{
 
-  constructor (private authService:AuthService){}
+  constructor (private authService:AuthService,private router:Router){}
   
   check=(response:any):any=>{
     if(response!==null){
@@ -15,11 +16,16 @@ export class  ErrorResponseService{
         const errorResponse:ErrorResponse=response.errorResponse;
         if(errorResponse.statusCode===404 || errorResponse.statusCode===409)
           return errorResponse.msg;
-        else
-         return this.authService.setErrorResponse(errorResponse); 
+        else{
+          this.authService.setErrorResponse(errorResponse);
+          this.router.navigateByUrl("/error");
+          return -1;
+        }    
       }   
-      return response; 
+      else 
+        return response; 
     }
-    return null;
+    else 
+      return 0; 
   }
 }

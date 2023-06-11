@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'; 
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -12,29 +13,22 @@ export class UserComponent {
 
   private intervalId!:NodeJS.Timer;
 
-  constructor(private router:Router,private userService:UserService){
-    // if(this.userService.token===undefined){
-    //   if(localStorage.getItem("token2")!==null){
-    //     const token=localStorage.getItem("token2")!;
-    //     this.userService.token=token;
-    //     if(localStorage.getItem("token1")!==null)
-    //       localStorage.removeItem("token1")
-    //   }
-    //   else 
-    //     router.navigateByUrl(''); 
-    // }
-    // else if(localStorage.getItem("token1")!==null){
-    //   if(this.userService.token===null)
-    //     router.navigateByUrl('/admin')
-    //   else 
-    //     localStorage.removeItem("token1")
-    // }
-  }
+  constructor(
+    private router:Router,
+    private userService:UserService,
+    private authService:AuthService
+  ){}
 
   ngOnInit(){
+    this.authService.getLogIn().subscribe(response=>{
+      if(response===0)
+        this.userService.refreshToken().subscribe();
+      else 
+        this.authService.initLogIn();
+    });
     this.intervalId=setInterval(()=>{
-      //this.userService.refreshToken().subscribe();
-    },1000);
+      this.userService.refreshToken().subscribe();
+    },900000);
   }
 
   ngOnDestroy(){
@@ -42,7 +36,9 @@ export class UserComponent {
   }
 
   logOut=()=>{
-    localStorage.removeItem('token2');
-    this.router.navigateByUrl('');
+    this.userService.logOut().subscribe(response=>{
+      if(response!==-1)
+        this.router.navigateByUrl('');
+    });
   }
 }

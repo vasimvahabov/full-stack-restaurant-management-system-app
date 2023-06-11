@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.rms.dtos.EmployeeDTO;
 import com.example.rms.entities.Employee; 
+import com.example.rms.entities.Position;
 import com.example.rms.repositories.EmployeeRepository;
 
 @Service
@@ -19,8 +20,9 @@ public class EmployeeService {
 
   public EmployeeDTO addEmployee(EmployeeDTO employeeDTO){ 
     String employeePhone="+994"+employeeDTO.phone;
+    Position position=new Position(employeeDTO.posId,null,null);
     Employee employee=new Employee(null,employeeDTO.firstName,employeeDTO.lastName,
-                      employeeDTO.email,employeePhone,employeeDTO.posId,employeeDTO.status);
+                      employeeDTO.email,employeePhone,null,position);
     employee=this._employeeRepository.save(employee); 
     employeeDTO.id=employee.getId(); 
     employeeDTO.status=true; 
@@ -36,14 +38,12 @@ public class EmployeeService {
 
   public void updateEmployee(EmployeeDTO employeeDTO){
    Employee employee=this._employeeRepository.findById(employeeDTO.id).orElse(null);
-   
    employee.setFirstName(employeeDTO.firstName);
    employee.setLastName(employeeDTO.lastName);
-   employee.setEmail(employeeDTO.email);
-   employee.setPosId(employeeDTO.posId);   
+   employee.setEmail(employeeDTO.email); 
+   employee.getPosition().setId(employeeDTO.posId);
    String employeePhone="+994"+employeeDTO.phone;
    employee.setPhone(employeePhone);
-   
    this._employeeRepository.save(employee);
   }
 }

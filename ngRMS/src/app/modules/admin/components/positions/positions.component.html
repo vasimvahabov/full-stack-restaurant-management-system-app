@@ -6,12 +6,11 @@
 
   <div *ngFor="let position of positions" class="card"> 
     <div class="card-body">
-      <span class="card-text">
-        {{position.title}}
-      </span> 
+      <span class="card-text">{{position.title}}</span> 
       <span class="actions">
-        <mat-slide-toggle (change)="onSlideToogle(position.id!)" [checked]="position.status"></mat-slide-toggle>
-        <span class="material-icons edit-icon" (click)="editEmployee(position)">edit</span>
+        <mat-slide-toggle (change)="onSlideToogle(position.id!)" [checked]="position.status">
+        </mat-slide-toggle>
+        <span class="material-icons edit-icon" (click)="editPosition(position)">edit</span>
        </span>
       </div>
     </div>

@@ -1,18 +1,20 @@
 package com.example.rms.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.annotation.Nonnull;
+import java.math.BigDecimal; 
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor; 
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
- private String id;
- private String title;
- private String userId;
- private String userFullName;
- private String createdAt;
- private String updatedAt;
- private Double total;
+  public Integer id;
+  public String title;
+  public LocalDateTime createdAt;
+  public LocalDateTime updatedAt;
+  public Integer userId;
+  public String userFullName;
+  @Nonnull
+  public BigDecimal total;
 }

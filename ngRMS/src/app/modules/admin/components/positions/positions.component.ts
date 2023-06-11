@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'; 
-import { Router } from '@angular/router'; 
 import { Position } from '../../models/position';
 import { PositionService } from '../../services/position.service';
 import { AddPositionComponent } from './add-position/add-position.component';
@@ -15,10 +14,12 @@ export class PositionsComponent {
 
   public positions!:Position[]; 
 
-  constructor(private positionService:PositionService,private dialog:MatDialog,
-                                      private router:Router){
-    this.positionService.getAllPositions().subscribe(response=>{
-      this.positions=response; 
+  constructor(private positionService:PositionService,private dialog:MatDialog){}
+
+  ngOnInit(){
+    this.positionService.getAllPositions().subscribe(response=>{ 
+      if(response!==-1)
+        this.positions=response; 
     });
   }
 
@@ -36,13 +37,10 @@ export class PositionsComponent {
   }
 
   onSlideToogle=(posId:number)=>{
-    this.positionService.changePositionStatus(posId).subscribe(response=>{
-      if(response===undefined)
-        this.router.navigateByUrl('/error'); 
-    });
+    this.positionService.changePositionStatus(posId).subscribe();
   }
 
-  editEmployee=(position:Position)=>{
+  editPosition=(position:Position)=>{
     this.dialog.open(EditPositionComponent,{
       data:position,
       disableClose:true,

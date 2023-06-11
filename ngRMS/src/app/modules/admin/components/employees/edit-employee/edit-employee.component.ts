@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { CustomValidators } from 'src/app/helpers/customValidators'; 
 import { Employee } from '../../../models/employee';  
 import { Position } from '../../../models/position';
@@ -18,11 +17,13 @@ export class EditEmployeeComponent {
   public positions!:Position[];
   public emailMsg:string|undefined;
   public phoneNumberMsg:string|undefined;
-  public empGroup:FormGroup;
+  public empGroup!:FormGroup;
 
-  constructor(private ref:MatDialogRef<EditEmployeeComponent>,
-      private posService:PositionService,private empService:EmployeeService,
-       private router:Router,@Inject(MAT_DIALOG_DATA) public employee:Employee){
+  constructor(
+    private ref:MatDialogRef<EditEmployeeComponent>,
+    private posService:PositionService,
+    private empService:EmployeeService,
+    @Inject(MAT_DIALOG_DATA) public employee:Employee){
     this.empGroup=new FormGroup({
       firstName:new FormControl(this.employee.firstName,[
         Validators.required,
@@ -43,17 +44,18 @@ export class EditEmployeeComponent {
         Validators.required,
         Validators.pattern("^[0-9]{1,12}$")
       ]),
-      position:new FormControl(this.employee.posId.toString(),[
-        Validators.required
-      ])
-    });
-    this.posService.getActivePositions().subscribe(response=>{
-      if(response===undefined)
-        this.router.navigateByUrl("/error");
-      else 
-        this.positions=response; 
-    });
+      position:new FormControl(this.employee.posId.toString(),Validators.required)
+      });
   } 
+
+  ngOnInit(){
+    this.posService.getActivePositions().subscribe(response=>{
+      if(response!==-1)
+        this.positions=response; 
+      else 
+        this.ref.close();
+    });
+  }
 
   cancel=()=>{
     this.ref.close();
@@ -72,11 +74,8 @@ export class EditEmployeeComponent {
       posTitle:null,
       posStatus:null
     };     
-    console.log(employee);
     this.empService.updateEmployee(employee).subscribe(response=>{
-      if(response===undefined)
-        this.router.navigateByUrl("/error");
-      else if(typeof(response)==='string'){
+      if(typeof(response)==='string'){
         const msg=response; 
         if(msg.includes("email")){
           this.emailMsg=msg;
@@ -89,6 +88,8 @@ export class EditEmployeeComponent {
             this.emailMsg=undefined;
         }
       }
+      else if(response===-1)
+        this.ref.close({data:null}); 
       else{
         this.employee.firstName=employee.firstName;
         this.employee.lastName=employee.lastName;
@@ -100,6 +101,7 @@ export class EditEmployeeComponent {
         this.employee.posStatus=position.status; 
         this.ref.close();
       }
+      
     });
   }
 }

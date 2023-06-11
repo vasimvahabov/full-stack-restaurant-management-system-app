@@ -5,22 +5,25 @@
     <!----------------------  First Name field  ---------------------->
     <div class="col-md-10">
       <label for="firstName" class="form-label">First Name</label>
-      <input type="text" [formControl]="validationFirstName" class="form-control"
-      [ngClass]="{'is-invalid':validationFirstName.errors,'is-valid':validationFirstName.errors===null}"
-      id="firstName">
+      <input type="text" id="firstName" [formControl]="validationFirstName" class="form-control"
+      [ngClass]="{'is-invalid':validationFirstName.errors,
+                  'is-valid':validationFirstName.errors===null}">
 
-      <div *ngIf="validationFirstName.errors?.['required']; else secondFirstNameErrTemplate" class="invalid-feedback">
+      <div *ngIf="validationFirstName.errors?.['required']; 
+            else secondFirstNameErrTemplate" class="invalid-feedback">
         <span>First name is required...</span>
       </div> 
       
       <ng-template #secondFirstNameErrTemplate>
-        <div *ngIf="validationFirstName.errors?.['maxlength']; else thirdFirstNameErrTemplate" class="invalid-feedback">
+        <div *ngIf="validationFirstName.errors?.['maxlength']; 
+              else thirdFirstNameErrTemplate" class="invalid-feedback">
           <span>First name mustn't owerflow 50 character...</span>
         </div> 
       </ng-template>
 
       <ng-template #thirdFirstNameErrTemplate>
-        <div *ngIf="validationFirstName.errors?.['whitespace']; else firstNameSuccessTemplate" class="invalid-feedback">
+        <div *ngIf="validationFirstName.errors?.['whitespace']; 
+              else firstNameSuccessTemplate" class="invalid-feedback">
           <span>First name can't contain white spaces...</span>
         </div> 
       </ng-template>
@@ -37,22 +40,24 @@
     <!----------------------  Last Name field  ---------------------->
     <div class="col-md-10">
       <label for="lastName" class="form-label">Last Name</label>
-      <input type="text" [formControl]="validationLastName" class="form-control"
-      [ngClass]="{'is-invalid':validationLastName.errors,'is-valid':validationLastName.errors===null}"
-      id="lastName">
+      <input type="text" id="lastName" [formControl]="validationLastName" class="form-control"
+      [ngClass]="{'is-invalid':validationLastName.errors,'is-valid':validationLastName.errors===null}">
       
-      <div *ngIf="validationLastName.errors?.['required']; else secondLastnameErrTemplate" class="invalid-feedback">
+      <div *ngIf="validationLastName.errors?.['required']; 
+            else secondLastnameErrTemplate" class="invalid-feedback">
         <span>Last name is required...</span>
       </div> 
       
       <ng-template #secondLastnameErrTemplate>
-        <div *ngIf="validationLastName.errors?.['maxlength']; else thirdLastNameErrTemplate" class="invalid-feedback">
+        <div *ngIf="validationLastName.errors?.['maxlength']; 
+              else thirdLastNameErrTemplate" class="invalid-feedback">
           <span>Last name mustn't owerflow 50 character...</span>
         </div> 
       </ng-template>
 
       <ng-template #thirdLastNameErrTemplate>
-        <div *ngIf="validationLastName.errors?.['whitespace']; else lastNameSuccessTemplate" class="invalid-feedback">
+        <div *ngIf="validationLastName.errors?.['whitespace']; 
+              else lastNameSuccessTemplate" class="invalid-feedback">
           <span>Last name can't contain white spaces...</span>
         </div> 
       </ng-template>
@@ -69,28 +74,31 @@
     <!----------------------  Username field  ---------------------->    
     <div class="col-md-10">
       <label for="username" class="form-label">Username</label>
-      <input type="text" [formControl]="validationUsername" class="form-control"
-      [ngClass]="{'is-invalid':validationUsername.errors || msg!==undefined,'is-valid':validationUsername.errors===null && msg===undefined}"
-      id="username"> 
+      <input type="text" id="username" [formControl]="validationUsername" class="form-control"
+      [ngClass]="{'is-invalid':validationUsername.errors || msg!==undefined,
+                  'is-valid':validationUsername.errors===null && msg===undefined}"> 
       
       <div *ngIf="msg!==undefined; else secondUsernameErrTemplate" class="invalid-feedback">
         <span>{{msg}}</span>
       </div> 
       
       <ng-template #secondUsernameErrTemplate>
-        <div *ngIf="validationUsername.errors?.['required']; else thirdUsernameErrTemplate" class="invalid-feedback">
+        <div *ngIf="validationUsername.errors?.['required']; 
+              else thirdUsernameErrTemplate" class="invalid-feedback">
           <span>Username is required...</span>
         </div> 
       </ng-template>
 
       <ng-template #thirdUsernameErrTemplate>
-        <div *ngIf="validationUsername.errors?.['maxlength']; else fourthUsernameErrTemplate" class="invalid-feedback">
+        <div *ngIf="validationUsername.errors?.['maxlength']; 
+              else fourthUsernameErrTemplate" class="invalid-feedback">
           <span>Username mustn't owerflow 100 character...</span>
         </div> 
       </ng-template>
 
       <ng-template #fourthUsernameErrTemplate>
-        <div *ngIf="validationUsername.errors?.['whitespace']; else usernameSuccessTemplate" class="invalid-feedback">
+        <div *ngIf="validationUsername.errors?.['whitespace']; 
+              else usernameSuccessTemplate" class="invalid-feedback">
           <span>Username can't contain white spaces...</span>
         </div> 
       </ng-template>
@@ -106,7 +114,9 @@
 
     <!----------------------  Show Reset Password Inputs button  ---------------------->  
     <div class="toogle-reset-password col-md-10 my-2">
-      <mat-slide-toggle [checked]="showResetInputs" (click)="showResetInputClicked()">Reset Password</mat-slide-toggle>
+      <mat-slide-toggle [checked]="showResetInputs" (click)="showResetInputClicked()">
+        Reset Password
+      </mat-slide-toggle>
     </div> 
     <!----------------------  Show Reset Password Inputs button  ---------------------->  
 
@@ -114,23 +124,24 @@
     <!----------------------  Password field  ---------------------->  
     <div *ngIf="showResetInputs===true" class="col-md-10">
       <label for="password" class="form-label">Password</label>
-      <input type="password" 
-      [formControl]="validationPassword" class="form-control"
-      [ngClass]="{'is-invalid':validationPassword.errors,'is-valid':validationPassword.errors===null}"
-      id="password">
+      <input type="password" id="password" [formControl]="validationPassword" class="form-control"
+      [ngClass]="{'is-invalid':validationPassword.errors,'is-valid':validationPassword.errors===null}">
 
-      <div *ngIf="validationPassword.errors?.['required']; else secondPasswordErrTemplate" class="invalid-feedback">
+      <div *ngIf="validationPassword.errors?.['required']; 
+            else secondPasswordErrTemplate" class="invalid-feedback">
         <span>Password is required...</span>
       </div> 
       
       <ng-template #secondPasswordErrTemplate>
-        <div *ngIf="validationPassword.errors?.['maxlength']; else thirdPasswordErrTemplate" class="invalid-feedback">
+        <div *ngIf="validationPassword.errors?.['maxlength']; 
+              else thirdPasswordErrTemplate" class="invalid-feedback">
           <span>Password mustn't owerflow 100 character...</span>
         </div> 
       </ng-template>
 
       <ng-template #thirdPasswordErrTemplate>
-        <div *ngIf="validationPassword.errors?.['minlength']; else passwordSuccessTemplate" class="invalid-feedback">
+        <div *ngIf="validationPassword.errors?.['minlength']; 
+              else passwordSuccessTemplate" class="invalid-feedback">
           <span>Password must be 8 character at least...</span>
         </div> 
       </ng-template> 
@@ -149,24 +160,27 @@
     <div *ngIf="showResetInputs===true" class="col-md-10">
       <label for="confirmPassword" class="form-label">Confirm Password</label>
       <input type="password" 
-     [formControl]="validationConfirmPassword"
-      [ngClass]="{
-        'is-invalid':validationConfirmPassword.errors || validationPassword.value?.toString()!==validationConfirmPassword.value?.toString(),
-        'is-valid':validationConfirmPassword.errors===null && validationPassword.value?.toString()===validationConfirmPassword.value?.toString()
-      }" class="form-control" id="confirmPassword">
+     [formControl]="validationConfirmPassword" class="form-control" id="confirmPassword"
+      [ngClass]="{'is-invalid':validationConfirmPassword.errors || 
+                    validationPassword.value?.toString()!==validationConfirmPassword.value?.toString(),
+                  'is-valid':validationConfirmPassword.errors===null && 
+                    validationPassword.value?.toString()===validationConfirmPassword.value?.toString()}">
 
-      <div *ngIf="validationConfirmPassword.errors?.['required']; else secondConfirmPasswordErrTemplate" class="invalid-feedback"> 
+      <div *ngIf="validationConfirmPassword.errors?.['required']; 
+            else secondConfirmPasswordErrTemplate" class="invalid-feedback"> 
           <span>Confirm password is required...</span> 
       </div> 
       
       <ng-template #secondConfirmPasswordErrTemplate>
-        <div *ngIf="validationPassword.value?.toString()!==validationConfirmPassword.value?.toString(); else confirmPasswordSuccessTemplate" class="invalid-feedback">
+        <div *ngIf="validationPassword.value?.toString()!==validationConfirmPassword.value?.toString(); 
+              else confirmPasswordSuccessTemplate" class="invalid-feedback">
           <span>Passwords don't match...</span>
         </div>
       </ng-template> 
 
       <ng-template #confirmPasswordSuccessTemplate>
-        <div *ngIf="validationConfirmPassword.errors===null && validationPassword.value?.toString()===validationConfirmPassword.value?.toString()" class="valid-feedback">
+        <div *ngIf="validationPassword.value?.toString()===validationConfirmPassword.value?.toString()&&
+                    validationConfirmPassword.errors===null"  class="valid-feedback" >
           <span>Looks good!</span>
         </div> 
       </ng-template> 

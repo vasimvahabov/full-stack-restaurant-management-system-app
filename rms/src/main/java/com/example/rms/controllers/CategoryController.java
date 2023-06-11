@@ -14,9 +14,10 @@ import com.example.rms.dtos.CategoryDTO;
 import com.example.rms.models.CategoryModel;
 import com.example.rms.services.CategoryService;
 import java.util.ArrayList;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController 
-@RequestMapping("/category")
+@RequestMapping("category")
 public class CategoryController {
 
   @Autowired
@@ -28,10 +29,10 @@ public class CategoryController {
     List<CategoryModel> categoryModels=new ArrayList<>();
     for(var item:categoryDTOs){
       CategoryModel categoryModel=CategoryModel.builder()
-                                                 .id(item.id)
-                                                 .title(item.title)
-                                                 .status(item.status)
-                                                 .prodCount(item.prodCount)
+                                                   .id(item.id)
+                                                   .title(item.title)
+                                                   .status(item.status)
+                                                   .prodCount(item.prodCount)
                                                  .build();
       categoryModels.add(categoryModel);
     }
@@ -44,37 +45,35 @@ public class CategoryController {
     List<CategoryModel> activeCategoryModels=new ArrayList<>();
     for(var item:activeCategoryDTOs){
       CategoryModel categoryModel=CategoryModel.builder()
-                                                 .id(item.id)
-                                                 .title(item.title)
-                                                 .status(item.status)
-                                                 .prodCount(item.prodCount)
+                                                   .id(item.id)
+                                                   .title(item.title)
+                                                   .status(item.status)
+                                                   .prodCount(null)
                                                  .build();
       activeCategoryModels.add(categoryModel);
     }
     return ResponseEntity.ok(activeCategoryModels);
   }
 
-  @PostMapping("/add")
+  @PostMapping("add")
   public ResponseEntity<CategoryModel> addCategory(@RequestBody CategoryModel categoryModel){
-    CategoryDTO categoryDTO=new CategoryDTO(categoryModel.id,
-                              categoryModel.title,categoryModel.status,categoryModel.prodCount);
+    CategoryDTO categoryDTO=new CategoryDTO(null,categoryModel.title,null,null);
     categoryDTO=this._categoryService.addCategory(categoryDTO);
     categoryModel.id=categoryDTO.id;
-    categoryDTO.status=categoryDTO.status;
+    categoryModel.status=categoryDTO.status;
     categoryModel.prodCount=categoryDTO.prodCount;
     return ResponseEntity.ok(categoryModel);
   }
 
-  @PutMapping("/update")
+  @PutMapping("update")
   public ResponseEntity<Void> updateCategory(@RequestBody CategoryModel categoryModel) {
-    CategoryDTO categoryDTO=new CategoryDTO(categoryModel.id,
-                              categoryModel.title,categoryModel.status,categoryModel.prodCount);
+    CategoryDTO categoryDTO=new CategoryDTO(categoryModel.id,categoryModel.title,null,null);
     this._categoryService.updateCategory(categoryDTO);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  @PutMapping("/change-status/{cateId}")
-  public ResponseEntity<Void> changeCategoryStatus(@RequestBody Integer cateId) {
+  @PutMapping("change-status/{cateId}")
+  public ResponseEntity<Void> changeCategoryStatus(@PathVariable int cateId) {
     this._categoryService.changeCategoryStatus(cateId);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }

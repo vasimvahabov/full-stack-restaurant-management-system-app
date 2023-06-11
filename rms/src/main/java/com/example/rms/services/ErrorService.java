@@ -12,7 +12,7 @@ public class ErrorService {
   ErrorRepository _errorRepository;
   
   public void addError(ErrorDTO errorDTO){
-    Error error=new Error(errorDTO.id,errorDTO.msg, errorDTO.date);
+    Error error=new Error(null,errorDTO.msg,null);
     this._errorRepository.save(error);
   }
 }

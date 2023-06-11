@@ -29,23 +29,18 @@ public class AuthEntryPoint implements AuthenticationEntryPoint{
     
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response,
-	    AuthenticationException authException) throws IOException, ServletException{ 
+                        AuthenticationException authException) throws IOException, ServletException{ 
     SecurityContextHolder.clearContext();
     if(request.getCookies()!=null){ 
-      Cookie[] cookies=request.getCookies();
-      for(var item:cookies){
-        if(item.getName().equals("token")){
-          item.setMaxAge(0); 
-          item.setPath("/");
-          response.addCookie(item);
-        }
-      }
-    } 
+      Cookie cookie=new Cookie("token",null);
+      cookie.setMaxAge(0);
+      cookie.setPath("/");
+      cookie.setDomain("localhost");
+      cookie.setHttpOnly(true);
+      response.addCookie(cookie);
+    }
     
-    String msg=authException.getMessage(); 
-    SecurityContextHolder.clearContext();
-    System.out.println("In commence -> "+msg);
-
+    String msg=authException.getMessage();  
     ErrorDTO errorDTO=new ErrorDTO(null,msg,null);
     this._errorService.addError(errorDTO);
     

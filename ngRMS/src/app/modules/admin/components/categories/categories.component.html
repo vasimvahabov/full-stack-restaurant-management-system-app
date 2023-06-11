@@ -7,7 +7,9 @@
   <div *ngFor="let category of categories" class="card"> 
     <div class="card-body">
       <span class="card-text">
-        {{category.name}}&nbsp;|&nbsp;{{category.prodCount}} {{category.prodCount!<=1?"product":"products"}}&nbsp;|&nbsp;<a href="#">Show meals in the category</a>
+        {{category.title}}&nbsp;|&nbsp;{{category.prodCount}} 
+        {{category.prodCount!<=1?"product":"products"}}&nbsp;|&nbsp;
+        <a routerLink="/admin/products">Show products in the category</a>
       </span>
       <span class="actions">
         <mat-slide-toggle (change)="onSlideToogle(category.id!)" [checked]="category.status"></mat-slide-toggle> 

@@ -7,10 +7,12 @@
   <div *ngFor="let emp of emps" class="card"> 
     <div class="card-body">
       <span class="card-text">
-        {{emp.posTitle}}&nbsp;|&nbsp;{{emp.firstName}}&nbsp;{{emp.lastName}}&nbsp;|&nbsp;{{emp.email}}&nbsp;|&nbsp;{{emp.phone}}
+        {{emp.posTitle}}&nbsp;|&nbsp;{{emp.firstName}}&nbsp;
+        {{emp.lastName}}&nbsp;|&nbsp;{{emp.email}}&nbsp;|&nbsp;{{emp.phone}}
       </span> 
       <span class="actions">
-        <mat-slide-toggle (change)="onSlideToogle(emp.id!)" [disabled]="!emp.posStatus" [checked]="emp.status"></mat-slide-toggle> 
+        <mat-slide-toggle (change)="onSlideToogle(emp.id!)" [disabled]="!emp.posStatus" [checked]="emp.status">
+        </mat-slide-toggle> 
         <button class="edit-btn" [disabled]="!emp.posStatus" (click)="editEmployee(emp)">
           <span class="material-icons edit-icon">edit</span>
         </button>

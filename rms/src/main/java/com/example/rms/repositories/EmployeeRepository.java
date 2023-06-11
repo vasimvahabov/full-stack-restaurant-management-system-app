@@ -8,8 +8,16 @@ import com.example.rms.entities.Employee;
 
 public interface EmployeeRepository extends CrudRepository<Employee,Integer>{
 
-  @Query(value = "select new com.example.rms.dtos.EmployeeDTO(e.id as string,e.firstName,"
-                  +"e.lastName,e.email,e.phone,e.status,p.id,p.title,p.status) from Employee"
-                                    +" as e inner join Position as p on e.posId=p.id")
+  @Query("select new com.example.rms.dtos.EmployeeDTO("
+                                                +"e.id,"
+                                                +"e.firstName,"
+                                                +"e.lastName,"
+                                                +"e.email,"
+                                                +"e.phone,"
+                                                +"e.status,"
+                                                +"e.position.id,"
+                                                +"e.position.title,"
+                                                +"e.position.status"
+                                             +") from Employee e")
   public List<EmployeeDTO> getAllEmployees();
 }

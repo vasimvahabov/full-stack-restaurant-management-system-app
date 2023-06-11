@@ -3,32 +3,31 @@ package com.example.rms.error;
 import com.example.rms.services.ErrorService; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order; 
-import com.example.rms.dtos.ErrorDTO;  
-import java.util.LinkedHashMap; 
-import org.springframework.dao.DataIntegrityViolationException;
+import com.example.rms.dtos.ErrorDTO;   
+import java.sql.SQLException;
+import java.util.LinkedHashMap;  
+import org.springframework.core.Ordered; 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice; 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;  
 
-@Order(value = -2147483644)
+@Order(value =Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ExceptionHandlerExceptionResolver{
 	
   @Autowired
   ErrorService _errorService;
   
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<LinkedHashMap> handleException(Exception exception){
-    String msg=exception.getMessage(); 
-    System.out.println("In handleException -> "+msg);       
-            
+  @ExceptionHandler(SQLException.class)
+  public ResponseEntity<LinkedHashMap> handleSQLException(SQLException exception){
+    String msg=exception.getMessage();                
     ErrorDTO errorDTO=new ErrorDTO(null,msg,null);
     this._errorService.addError(errorDTO); 
     
     Integer statusCode=null;
-    if(exception instanceof DataIntegrityViolationException){ 
+    if(exception.getErrorCode()==1062){  
       statusCode=HttpStatus.CONFLICT.value();    
       if(msg.contains("employees_.email_"))
         msg="That email already exists. Try another...";
@@ -48,5 +47,4 @@ public class RestExceptionHandler extends ExceptionHandlerExceptionResolver{
     
     return ResponseEntity.ok(errorHashMap);
   } 
-	
 }

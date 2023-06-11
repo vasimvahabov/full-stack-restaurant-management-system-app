@@ -7,8 +7,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Data; 
+import lombok.NoArgsConstructor;  
+import org.hibernate.annotations.ColumnDefault; 
 
 @Entity
 @Data
@@ -21,9 +22,10 @@ public class Category {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name ="title_")
+  @Column(name ="title_",nullable = false,length = 100,unique = true)
   private String title;
 
-  @Column(name="status_",insertable = false)
+  @ColumnDefault(value = "true")
+  @Column(name="status_",nullable = false,insertable = false)
   private Boolean status;
 }
