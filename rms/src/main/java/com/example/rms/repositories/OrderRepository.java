@@ -45,7 +45,7 @@ public interface OrderRepository extends CrudRepository<Order,Integer>{
 
   @Modifying
   @Transactional
-  @Query(value="update orders_ set"
+  @Query(value="update orders_ set "
                                   +"completed_=true,"
                                   +"updated_at_=now() "
                                     +"where id_=:ORDER_ID",nativeQuery = true)

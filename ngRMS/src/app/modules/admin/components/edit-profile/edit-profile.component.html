@@ -8,18 +8,21 @@
         [ngClass]="{'is-invalid':adminGroup.controls['username'].errors,
                     'is-valid':adminGroup.controls['username'].errors===null}">
         
-        <div class="invalid-feedback" *ngIf="adminGroup.controls['username'].errors?.['required']; else secondUsernameErrorTemplate">
+        <div *ngIf="adminGroup.controls['username'].errors?.['required']; 
+              else secondUsernameErrorTemplate" class="invalid-feedback" >
           <span>Username is required...</span>
         </div> 
         
         <ng-template #secondUsernameErrorTemplate>
-          <div class="invalid-feedback" *ngIf="adminGroup.controls['username'].errors?.['white-space']; else thirdUsernameErrorTemplate">
+          <div *ngIf="adminGroup.controls['username'].errors?.['whitespace']; 
+                else thirdUsernameErrorTemplate" class="invalid-feedback">
             <span>Username can't contain white spaces...</span>
           </div> 
         </ng-template>
         
         <ng-template #thirdUsernameErrorTemplate> 
-          <div *ngIf="adminGroup.controls['username'].errors?.['maxlength']; else correctUsernameTemplate" class="invalid-feedback">
+          <div *ngIf="adminGroup.controls['username'].errors?.['maxlength']; 
+                else correctUsernameTemplate" class="invalid-feedback">
             <span>Username mustn't owerflow 100 character...</span>
           </div> 
         </ng-template>
@@ -32,7 +35,9 @@
       </div>
 
       <div class="toogle-reset-password col-md-10 my-2">
-        <mat-slide-toggle [checked]="showResetInputs" (click)="showResetInputsClicked()">Reset Password</mat-slide-toggle>
+        <mat-slide-toggle [checked]="showResetInputs" (click)="showResetInputsClicked()">
+          Reset Password
+        </mat-slide-toggle>
       </div> 
       <ng-container *ngIf="showResetInputs===true">
         <div class="col-md-10">
